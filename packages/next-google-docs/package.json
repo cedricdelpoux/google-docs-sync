@@ -1,6 +1,6 @@
 {
   "name": "next-google-docs",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Next.js integration to use Google Docs as a data source",
   "repository": {
     "type": "git",
@@ -71,7 +71,7 @@
     "next": ">=14.0.0"
   },
   "dependencies": {
-    "google-docs-sync": "^0.2.1",
+    "google-docs-sync": "^0.2.2",
     "yaml": "^2.9.1"
   },
   "scripts": {

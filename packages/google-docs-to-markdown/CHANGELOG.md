@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.5
+
+### Patch Changes
+
+- 4e280b5: Show the logo on a neutral tile.
+
 ## 2.0.4
 
 ### Patch Changes

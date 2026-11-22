@@ -1,5 +1,13 @@
 # astro-loader-google-docs
 
+## 0.2.2
+
+### Patch Changes
+
+- 4e280b5: Show the logo on a neutral tile.
+- Updated dependencies [4e280b5]
+  - google-docs-sync@0.2.2
+
 ## 0.2.1
 
 ### Patch Changes

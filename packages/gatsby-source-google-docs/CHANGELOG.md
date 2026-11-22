@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.2.2
+
+### Patch Changes
+
+- 4e280b5: Show the logo on a neutral tile.
+- Updated dependencies [4e280b5]
+  - google-docs-sync@0.2.2
+  - google-docs-to-markdown@2.0.5
+
 ## 3.2.1
 
 ### Patch Changes
