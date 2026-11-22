@@ -1,8 +1,18 @@
-# astro-loader-google-docs
+<div align="center">
+  <h1>astro-loader-google-docs</h1>
+  <br/>
+  <p>
+    <img src="./logo.svg" alt="astro-loader-google-docs" height="100px">
+  </p>
+  <br/>
 
 [![Npm][badge-npm]][npm]
 [![Build Status][badge-build]][actions]
 [![MIT license][badge-licence]](./LICENCE.md)
+
+</div>
+
+---
 
 `astro-loader-google-docs` is an [Astro](https://astro.build/) [content loader](https://docs.astro.build/en/reference/content-loader-reference/) that uses [Google Docs](https://docs.google.com/) as a data source. It syncs a Google Drive folder with [google-docs-sync](https://github.com/cedricdelpoux/google-docs-sync/tree/master/packages/google-docs-sync) and stores one entry per document in a content collection.
 

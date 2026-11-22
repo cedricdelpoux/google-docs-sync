@@ -1,8 +1,18 @@
-# next-google-docs
+<div align="center">
+  <h1>next-google-docs</h1>
+  <br/>
+  <p>
+    <img src="./logo.svg" alt="next-google-docs" height="100px">
+  </p>
+  <br/>
 
 [![Npm][badge-npm]][npm]
 [![Build Status][badge-build]][actions]
 [![MIT license][badge-licence]](./LICENCE.md)
+
+</div>
+
+---
 
 `next-google-docs` is a [Next.js](https://nextjs.org/) integration to use [Google Docs](https://docs.google.com/) as a data source. It syncs a [Google Drive](https://drive.google.com/) folder to Markdown files and images when `next dev` or `next build` starts, and gives your App Router pages two functions to read them.
 
