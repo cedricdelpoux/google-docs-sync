@@ -7,7 +7,7 @@ export default defineConfig({
     coverage: {
       include: ["utils/**"],
       exclude: ["utils/generate-token.js"],
-      reporter: ["text"],
+      reporter: ["text", "lcov"],
     },
   },
 })

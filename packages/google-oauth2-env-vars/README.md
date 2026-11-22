@@ -3,6 +3,7 @@
 
 [![Npm][badge-npm]][npm]
 [![Build Status][badge-build]][actions]
+[![Coverage][badge-coverage]][codecov]
 [![Downloads][badge-downloads]][npm]
 [![PRs welcome][badge-prs]][contributing]
 [![MIT license][badge-licence]][licence]
@@ -92,11 +93,13 @@ If this project is useful to you, you can give it a star, or support its mainten
 [badge-npm]: https://img.shields.io/npm/v/google-oauth2-env-vars.svg?style=flat-square
 [badge-downloads]: https://img.shields.io/npm/dt/google-oauth2-env-vars.svg?style=flat-square
 [badge-build]: https://img.shields.io/github/actions/workflow/status/cedricdelpoux/google-docs-sync/ci.yml?branch=main&style=flat-square
+[badge-coverage]: https://img.shields.io/codecov/c/github/cedricdelpoux/google-docs-sync/main.svg?flag=google-oauth2-env-vars&style=flat-square
 [badge-prs]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
 [badge-licence]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
 [badge-sponsor]: https://img.shields.io/badge/sponsor-%E2%99%A5-ea4aaa.svg?style=flat-square
 [npm]: https://www.npmjs.com/package/google-oauth2-env-vars
 [actions]: https://github.com/cedricdelpoux/google-docs-sync/actions/workflows/ci.yml
+[codecov]: https://app.codecov.io/gh/cedricdelpoux/google-docs-sync/tree/main/packages/google-oauth2-env-vars
 [contributing]: https://github.com/cedricdelpoux/google-docs-sync/blob/main/CONTRIBUTING.md
 [licence]: https://github.com/cedricdelpoux/google-docs-sync/blob/main/LICENCE.md
 [sponsor]: #support

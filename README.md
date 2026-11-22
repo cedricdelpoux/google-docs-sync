@@ -7,6 +7,7 @@
   <br/>
 
 [![Build Status][badge-build]][actions]
+[![Coverage][badge-coverage]][codecov]
 [![MIT license][badge-licence]](./LICENCE.md)
 [![PRs welcome][badge-prs]](./CONTRIBUTING.md)
 [![Sponsor][badge-sponsor]](#support)
@@ -72,10 +73,12 @@ If this project is useful to you, you can give it a star, or support its mainten
 </p>
 
 [badge-build]: https://img.shields.io/github/actions/workflow/status/cedricdelpoux/google-docs-sync/ci.yml?branch=main&style=flat-square
+[badge-coverage]: https://img.shields.io/codecov/c/github/cedricdelpoux/google-docs-sync/main.svg?style=flat-square
 [badge-licence]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
 [badge-prs]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
 [badge-sponsor]: https://img.shields.io/badge/sponsor-%E2%99%A5-ea4aaa.svg?style=flat-square
 [actions]: https://github.com/cedricdelpoux/google-docs-sync/actions/workflows/ci.yml
+[codecov]: https://app.codecov.io/gh/cedricdelpoux/google-docs-sync
 [v-gatsby]: https://img.shields.io/npm/v/gatsby-source-google-docs.svg?style=flat-square
 [n-gatsby]: https://www.npmjs.com/package/gatsby-source-google-docs
 [v-astro]: https://img.shields.io/npm/v/astro-loader-google-docs.svg?style=flat-square
