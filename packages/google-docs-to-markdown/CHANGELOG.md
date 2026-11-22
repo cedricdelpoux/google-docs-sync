@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.3
+
+### Patch Changes
+
+- e95f1ab: Keep each README to the essentials: shared documentation lives in google-docs-sync and google-docs-to-markdown, and every package shows the same badges and support links.
+- 9373095: Show the test coverage of each package with a Codecov badge in its README.
+
 ## 2.0.2
 
 ### Patch Changes
