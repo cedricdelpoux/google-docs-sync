@@ -1,0 +1,143 @@
+import {mkdir, mkdtemp, readFile, rm, writeFile} from "node:fs/promises"
+import {tmpdir} from "node:os"
+import {join} from "node:path"
+
+import {afterEach, beforeEach, expect, test, vi} from "vitest"
+import {syncGoogleDocs} from "google-docs-sync"
+
+vi.mock("google-docs-sync", () => ({syncGoogleDocs: vi.fn()}))
+
+const BUILD = "phase-production-build"
+
+let directory
+let withGoogleDocs
+
+beforeEach(async () => {
+  vi.resetModules()
+  delete process.env.NEXT_GOOGLE_DOCS_SYNCED
+  delete process.env.NEXT_GOOGLE_DOCS_OPTIONS
+  directory = await mkdtemp(join(tmpdir(), "next-google-docs-"))
+  await mkdir(join(directory, "content/images/home"), {recursive: true})
+  await writeFile(join(directory, "content/images/home/a.png"), "png")
+  await writeFile(join(directory, "content/home.md"), "# Home")
+  vi.mocked(syncGoogleDocs)
+    .mockReset()
+    .mockResolvedValue({
+      files: [
+        join(directory, "content/home.md"),
+        join(directory, "content/images/home/a.png"),
+      ],
+      fetchedCount: 1,
+      imagesCount: 1,
+    })
+  ;({withGoogleDocs} = await import("../lib/with-google-docs.js"))
+})
+
+afterEach(async () => {
+  await rm(directory, {recursive: true, force: true})
+})
+
+const createOptions = () => ({
+  folder: "FOLDER",
+  outputDir: join(directory, "content"),
+  publicDir: "public/docs",
+  logger: {info: vi.fn(), warn: vi.fn(), error: vi.fn()},
+})
+
+test("syncs once on build and passes the sync options through", async () => {
+  const options = createOptions()
+  const config = withGoogleDocs({reactStrictMode: true}, options)
+
+  await config(BUILD, {})
+
+  expect(syncGoogleDocs).toHaveBeenCalledTimes(1)
+  expect(syncGoogleDocs).toHaveBeenCalledWith(
+    expect.objectContaining({
+      folder: "FOLDER",
+      outputDir: options.outputDir,
+      logger: options.logger,
+    })
+  )
+  expect(syncGoogleDocs.mock.calls[0][0]).not.toHaveProperty("publicDir")
+})
+
+test("does not sync again when the config is loaded again", async () => {
+  const config = withGoogleDocs({}, createOptions())
+
+  await Promise.all([config(BUILD, {}), config(BUILD, {})])
+  await config("phase-development-server", {})
+
+  expect(syncGoogleDocs).toHaveBeenCalledTimes(1)
+})
+
+test("does not sync in a worker that inherits the environment", async () => {
+  process.env.NEXT_GOOGLE_DOCS_SYNCED = "1"
+
+  await withGoogleDocs({}, createOptions())(BUILD, {})
+
+  expect(syncGoogleDocs).not.toHaveBeenCalled()
+})
+
+test("does not sync outside of dev and build", async () => {
+  await withGoogleDocs({}, createOptions())("phase-production-server", {})
+
+  expect(syncGoogleDocs).not.toHaveBeenCalled()
+})
+
+test("returns the config untouched", async () => {
+  const nextConfig = {reactStrictMode: true}
+
+  const config = await withGoogleDocs(nextConfig, createOptions())(BUILD, {})
+
+  expect(config).toBe(nextConfig)
+})
+
+test("resolves a config function with its phase and context", async () => {
+  const nextConfig = vi.fn(async () => ({output: "export"}))
+  const context = {defaultConfig: {}}
+
+  const config = await withGoogleDocs(nextConfig, createOptions())(
+    BUILD,
+    context
+  )
+
+  expect(nextConfig).toHaveBeenCalledWith(BUILD, context)
+  expect(config).toEqual({output: "export"})
+})
+
+test("copies the images, and only the images, to the public directory", async () => {
+  const previous = process.cwd()
+  process.chdir(directory)
+
+  vi.mocked(syncGoogleDocs).mockResolvedValue({
+    files: ["content/home.md", "content/images/home/a.png"],
+    fetchedCount: 1,
+    imagesCount: 1,
+  })
+
+  try {
+    await withGoogleDocs({}, {...createOptions(), outputDir: "content"})(
+      BUILD,
+      {}
+    )
+
+    expect(await readFile("public/docs/images/home/a.png", "utf8")).toBe("png")
+    await expect(readFile("public/docs/home.md")).rejects.toThrow()
+  } finally {
+    process.chdir(previous)
+  }
+})
+
+test("rejects a public directory outside of public", () => {
+  expect(() =>
+    withGoogleDocs({}, {...createOptions(), publicDir: "static/docs"})
+  ).toThrow('"publicDir" must be inside "public"')
+})
+
+test("fails the build when the sync fails", async () => {
+  vi.mocked(syncGoogleDocs).mockRejectedValue(new Error("Missing folder"))
+
+  await expect(withGoogleDocs({}, createOptions())(BUILD, {})).rejects.toThrow(
+    "Missing folder"
+  )
+})

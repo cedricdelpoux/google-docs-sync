@@ -6,3 +6,4 @@ types
 package-lock.json
 **/examples/*/dist
 **/examples/*/.astro
+**/examples/*/.next
