@@ -1,6 +1,6 @@
 {
   "name": "google-docs-sync",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "Sync a Google Drive folder of Google Docs to local Markdown or MDX files",
   "repository": {
     "type": "git",

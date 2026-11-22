@@ -1,5 +1,16 @@
 # next-google-docs
 
+## 0.2.0
+
+### Minor Changes
+
+- 8d4ac47: Add a `comments` option that puts the comments of every Google Doc, with their replies and the passage they are attached to, in the `comments` field of its metadata. It is off by default because it costs one more Drive request per document on every sync. The Gatsby schema, the Astro schema and the Next.js types know the field.
+
+### Patch Changes
+
+- Updated dependencies [8d4ac47]
+  - google-docs-sync@0.2.0
+
 ## 0.1.3
 
 ### Patch Changes
