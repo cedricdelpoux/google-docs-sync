@@ -1,16 +1,18 @@
 <div align="center">
   <h1>google-oauth2-env-vars</h1>
 
-[![Npm version][badge-npm]][npm]
-[![Npm downloads][badge-npm-dl]][npm]
-[![MIT license][badge-licence]](./LICENCE.md)
-[![PRs welcome][badge-prs-welcome]](#contributing)
+[![Npm][badge-npm]][npm]
+[![Build Status][badge-build]][actions]
+[![Downloads][badge-downloads]][npm]
+[![PRs welcome][badge-prs]][contributing]
+[![MIT license][badge-licence]][licence]
+[![Sponsor][badge-sponsor]][sponsor]
 
 </div>
 
 ---
 
-Helper class to generate and cache `Google OAuth 2.0` tokens in `.env` files:
+Helper class to generate and cache `Google OAuth 2.0` tokens in `.env` files. It generates the token of [google-docs-sync](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/google-docs-sync#token-generation) and of the packages built on it.
 
 ```dotenv
 GOOGLE_OAUTH_CLIENT_ID=23...8o1jm.apps.googleusercontent.com
@@ -76,24 +78,25 @@ const googleDocs = docs({version: "v1", auth})
 
 `getEnvVars()` returns the same variables without creating a client, and throws when one of them is missing or invalid.
 
-## Contributing
+## Support
 
-- ⇄ Pull/Merge requests and ★ Stars are always welcome.
-- For bugs and feature requests, please [create an issue][github-issue].
+If this project is useful to you, you can give it a star, or support its maintenance:
 
-```shell
-npm install
-npm run lint
-npm test
-```
-
-The code is plain JavaScript. The types of the public API are written as [JSDoc](https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html) comments: `npm run lint` checks them with TypeScript, and `npm pack` turns them into the `.d.ts` files of the package.
-
-To release a version, describe the change with `npm run changeset` and commit the generated file with your pull request. Once it is merged, the `Release` workflow opens a "Version packages" pull request, and merging it publishes the packages to npm with their provenance. See the [monorepo README](https://github.com/cedricdelpoux/google-docs-sync#releases).
+<p align="center">
+  <a href="https://thanks.dev/u/gh/cedricdelpoux"><img src="https://img.shields.io/badge/thanks.dev-000000?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyMCI%2BPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIuNiIgZD0iTTkgMkM2IDIgNS41IDMgNS41IDUuNVY4QzUuNSA5LjMgNC41IDEwIDIgMTBDNC41IDEwIDUuNSAxMC43IDUuNSAxMlYxNC41QzUuNSAxNyA2IDE4IDkgMThNMTUgMkMxOCAyIDE4LjUgMyAxOC41IDUuNVY4QzE4LjUgOS4zIDE5LjUgMTAgMjIgMTBDMTkuNSAxMCAxOC41IDEwLjcgMTguNSAxMlYxNC41QzE4LjUgMTcgMTggMTggMTUgMTgiLz48L3N2Zz4%3D" alt="thanks.dev"></a>
+  <a href="https://github.com/sponsors/cedricdelpoux"><img src="https://img.shields.io/badge/GitHub%20Sponsors-ea4aaa?style=for-the-badge&logo=githubsponsors&logoColor=white" alt="GitHub Sponsors"></a>
+  <a href="https://ko-fi.com/cedricdelpoux"><img src="https://img.shields.io/badge/Ko--fi-FF5E5B?style=for-the-badge&logo=kofi&logoColor=white" alt="Ko-fi"></a>
+  <a href="https://paypal.me/cedricdelpoux"><img src="https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white" alt="PayPal"></a>
+</p>
 
 [badge-npm]: https://img.shields.io/npm/v/google-oauth2-env-vars.svg?style=flat-square
-[badge-npm-dl]: https://img.shields.io/npm/dt/google-oauth2-env-vars.svg?style=flat-square
+[badge-downloads]: https://img.shields.io/npm/dt/google-oauth2-env-vars.svg?style=flat-square
+[badge-build]: https://img.shields.io/github/actions/workflow/status/cedricdelpoux/google-docs-sync/ci.yml?branch=main&style=flat-square
+[badge-prs]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
 [badge-licence]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
-[badge-prs-welcome]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
-[npm]: https://www.npmjs.org/package/google-oauth2-env-vars
-[github-issue]: https://github.com/cedricdelpoux/google-docs-sync/issues/new
+[badge-sponsor]: https://img.shields.io/badge/sponsor-%E2%99%A5-ea4aaa.svg?style=flat-square
+[npm]: https://www.npmjs.com/package/google-oauth2-env-vars
+[actions]: https://github.com/cedricdelpoux/google-docs-sync/actions/workflows/ci.yml
+[contributing]: https://github.com/cedricdelpoux/google-docs-sync/blob/main/CONTRIBUTING.md
+[licence]: https://github.com/cedricdelpoux/google-docs-sync/blob/main/LICENCE.md
+[sponsor]: #support

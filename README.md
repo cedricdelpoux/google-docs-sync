@@ -8,11 +8,8 @@
 
 [![Build Status][badge-build]][actions]
 [![MIT license][badge-licence]](./LICENCE.md)
-[![PRs welcome][badge-prs]](#contributing)
-[![GitHub Sponsors][badge-github]](https://github.com/sponsors/cedricdelpoux)
-[![Ko-fi][badge-kofi]](https://ko-fi.com/cedricdelpoux)
-[![thanks.dev][badge-thanks]](https://thanks.dev/u/gh/cedricdelpoux)
-[![Paypal][badge-paypal]](https://paypal.me/cedricdelpoux)
+[![PRs welcome][badge-prs]](./CONTRIBUTING.md)
+[![Sponsor][badge-sponsor]](#support)
 
 </div>
 
@@ -63,59 +60,22 @@ gatsby-source-google-docs, astro-loader-google-docs, next-google-docs
        └─ google-oauth2-env-vars
 ```
 
-## Development
-
-The repository uses [npm workspaces](https://docs.npmjs.com/cli/using-npm/workspaces) and requires Node.js 22.12 or later.
-
-```shell
-npm install
-npm run lint   # build, then eslint and tsc in each package, then prettier
-npm test       # run the tests of each package
-npm run build  # generate the type declarations of each package
-npm run format # format the repository with prettier
-```
-
-Use `-w <package>` to run a script in one package, for example `npm test -w google-docs-to-markdown`.
-
-## Contributing
-
-- Pull requests and stars are always welcome.
-- For bugs and feature requests, please [create an issue][github-issue].
-- A change to a package comes with a changeset: run `npm run changeset` (see [Releases](#releases)).
-- Run the tests of one package with `npm test -w <package>`, for example `npm test -w google-docs-sync`.
-
-## Releases
-
-The packages are versioned independently with [changesets](https://github.com/changesets/changesets).
-
-1. Run `npm run changeset` to choose the packages and the bump (patch, minor or major) and to describe the change. Commit the generated file with your pull request.
-2. When the pull request is merged into `main`, the `Release` workflow opens a "Version packages" pull request. It bumps the versions, updates the changelogs and the dependency ranges between the packages.
-3. Merging the "Version packages" pull request publishes the new versions to npm with their provenance and creates the git tags.
-
 ## Support
 
 If this project is useful to you, you can give it a star, or support its maintenance:
 
-- [GitHub Sponsors](https://github.com/sponsors/cedricdelpoux), monthly or one-time.
-- [Ko-fi](https://ko-fi.com/cedricdelpoux), for a one-time tip.
-- [thanks.dev](https://thanks.dev/u/gh/cedricdelpoux), which shares a budget between the open source dependencies of your projects.
-- [PayPal](https://paypal.me/cedricdelpoux).
-
-You can also visit [cedricdelpoux.fr](https://cedricdelpoux.fr/en).
-
-## License
-
-[MIT](./LICENCE.md)
+<p align="center">
+  <a href="https://thanks.dev/u/gh/cedricdelpoux"><img src="https://img.shields.io/badge/thanks.dev-000000?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyMCI%2BPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIuNiIgZD0iTTkgMkM2IDIgNS41IDMgNS41IDUuNVY4QzUuNSA5LjMgNC41IDEwIDIgMTBDNC41IDEwIDUuNSAxMC43IDUuNSAxMlYxNC41QzUuNSAxNyA2IDE4IDkgMThNMTUgMkMxOCAyIDE4LjUgMyAxOC41IDUuNVY4QzE4LjUgOS4zIDE5LjUgMTAgMjIgMTBDMTkuNSAxMCAxOC41IDEwLjcgMTguNSAxMlYxNC41QzE4LjUgMTcgMTggMTggMTUgMTgiLz48L3N2Zz4%3D" alt="thanks.dev"></a>
+  <a href="https://github.com/sponsors/cedricdelpoux"><img src="https://img.shields.io/badge/GitHub%20Sponsors-ea4aaa?style=for-the-badge&logo=githubsponsors&logoColor=white" alt="GitHub Sponsors"></a>
+  <a href="https://ko-fi.com/cedricdelpoux"><img src="https://img.shields.io/badge/Ko--fi-FF5E5B?style=for-the-badge&logo=kofi&logoColor=white" alt="Ko-fi"></a>
+  <a href="https://paypal.me/cedricdelpoux"><img src="https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white" alt="PayPal"></a>
+</p>
 
 [badge-build]: https://img.shields.io/github/actions/workflow/status/cedricdelpoux/google-docs-sync/ci.yml?branch=main&style=flat-square
 [badge-licence]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
 [badge-prs]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
-[badge-github]: https://img.shields.io/github/sponsors/cedricdelpoux?label=GitHub%20Sponsors&style=flat-square
-[badge-kofi]: https://img.shields.io/badge/Ko--fi-support-ff5e5b.svg?style=flat-square
-[badge-thanks]: https://img.shields.io/badge/thanks.dev-support-7b61ff.svg?style=flat-square
-[badge-paypal]: https://img.shields.io/badge/sponsor-PayPal-3b7bbf.svg?style=flat-square
+[badge-sponsor]: https://img.shields.io/badge/sponsor-%E2%99%A5-ea4aaa.svg?style=flat-square
 [actions]: https://github.com/cedricdelpoux/google-docs-sync/actions/workflows/ci.yml
-[github-issue]: https://github.com/cedricdelpoux/google-docs-sync/issues/new
 [v-gatsby]: https://img.shields.io/npm/v/gatsby-source-google-docs.svg?style=flat-square
 [n-gatsby]: https://www.npmjs.com/package/gatsby-source-google-docs
 [v-astro]: https://img.shields.io/npm/v/astro-loader-google-docs.svg?style=flat-square

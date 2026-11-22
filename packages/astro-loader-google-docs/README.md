@@ -8,7 +8,10 @@
 
 [![Npm][badge-npm]][npm]
 [![Build Status][badge-build]][actions]
-[![MIT license][badge-licence]](./LICENCE.md)
+[![Downloads][badge-downloads]][npm]
+[![PRs welcome][badge-prs]][contributing]
+[![MIT license][badge-licence]][licence]
+[![Sponsor][badge-sponsor]][sponsor]
 
 </div>
 
@@ -19,10 +22,9 @@
 ## Features
 
 - One collection entry per document, rendered with `render(entry)`
-- Slugs, breadcrumbs and custom metadata taken from the Google Drive tree, validated by a Zod schema
-- Images downloaded next to the documents and optimised by Astro
-- Incremental syncs: only the documents and images that changed are fetched, and only the documents that changed are rendered again
-- The covers can be optimised images too
+- Metadata validated by a Zod schema, the covers can be optimised images too
+- Images optimised by Astro
+- Incremental syncs: only the documents that changed are fetched and rendered again
 
 ## Installation
 
@@ -32,11 +34,11 @@ Requires **Node 22.12 or later** and **Astro 5 or later**.
 npm install astro-loader-google-docs
 ```
 
-The loader needs 3 variables (`GOOGLE_OAUTH_CLIENT_ID`, `GOOGLE_OAUTH_CLIENT_SECRET` and `GOOGLE_DOCS_TOKEN`) in the environment of the build. Astro does not put the `.env` file in `process.env`: load it in `astro.config.mjs` with `process.loadEnvFile()`. They are described in the [`google-docs-sync` documentation](../google-docs-sync#token-generation), which also tells how to generate them with `npx google-docs-sync-token`.
+The loader needs 3 variables (`GOOGLE_OAUTH_CLIENT_ID`, `GOOGLE_OAUTH_CLIENT_SECRET` and `GOOGLE_DOCS_TOKEN`) in the environment of the build. Astro does not put the `.env` file in `process.env`: load it in `astro.config.mjs` with `process.loadEnvFile()`. Generate them with `npx google-docs-sync-token`, see the [`google-docs-sync` documentation](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/google-docs-sync#token-generation).
 
 ## Usage
 
-Go to your [Google Drive](https://drive.google.com/drive/), create a folder and put some documents inside it. The folders tree gives the slugs and breadcrumbs, and the `description` of the folders and documents holds their YAML metadata: see [organize your documents](../google-docs-sync#organize-your-documents).
+Go to your [Google Drive](https://drive.google.com/drive/), create a folder and put some documents inside it. The folders tree gives the slugs and breadcrumbs, and the `description` of the folders and documents holds their YAML metadata: see [organize your documents](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/google-docs-sync#organize-your-documents).
 
 Add the loader to your collection in `src/content.config.ts`.
 
@@ -77,18 +79,7 @@ The [`examples/basic`](./examples/basic) site lists the documents of a Drive fol
 
 ### Options
 
-`googleDocsLoader(options)` takes the options of [`google-docs-sync`](../google-docs-sync#options), with the same names as [gatsby-source-google-docs](../gatsby-source-google-docs#add-the-plugin-to-your-gatsby-configjs-file). The `extension` is always `md`: the documents are rendered as Markdown, MDX is not supported.
-
-| Option           | Required | Type    | Default                 | Example         |
-| ---------------- | -------- | ------- | ----------------------- | --------------- |
-| folder           | `true`   | String  | `null`                  | `"1Tn1dCbIc"`   |
-| outputDir        | `false`  | String  | `"content/google-docs"` | `"src/content"` |
-| cacheDir         | `false`  | String  | `".google-docs"`        | `".cache-docs"` |
-| imagesOptions    | `false`  | Object  | `null`                  | `{width: 512}`  |
-| demoteHeadings   | `false`  | Boolean | `true`                  | `false`         |
-| keepDefaultStyle | `false`  | Boolean | `false`                 | `true`          |
-| skipImages       | `false`  | Boolean | `false`                 | `true`          |
-| debug            | `false`  | Boolean | `false`                 | `true`          |
+`googleDocsLoader(options)` takes the [options of `google-docs-sync`](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/google-docs-sync#options) (`folder`, `outputDir`, `cacheDir`, `imagesOptions`, `debug`) and the [conversion options of `google-docs-to-markdown`](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/google-docs-to-markdown#options), with the same names as in [gatsby-source-google-docs](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/gatsby-source-google-docs). The `extension` is always `md`: the documents are rendered as Markdown, MDX is not supported.
 
 `outputDir` and `cacheDir` are relative to the root of the Astro site. The loader owns `outputDir`: any other file it contains is deleted, so do not point it to a folder holding your own files. Add `outputDir` and `cacheDir` to your `.gitignore`.
 
@@ -102,12 +93,25 @@ The [`examples/basic`](./examples/basic) site lists the documents of a Drive fol
 
 The images of the documents are written next to them in `outputDir`, and the Markdown refers to them with relative paths. The loader renders each document relative to its file, so Astro treats them like the images of local Markdown files: they are optimised and fingerprinted at build time. Nothing has to be copied to `public/`.
 
-## Contributing
+## Support
 
-Issues and pull requests are welcome in the [repository](https://github.com/cedricdelpoux/google-docs-sync).
+If this project is useful to you, you can give it a star, or support its maintenance:
 
+<p align="center">
+  <a href="https://thanks.dev/u/gh/cedricdelpoux"><img src="https://img.shields.io/badge/thanks.dev-000000?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyMCI%2BPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIuNiIgZD0iTTkgMkM2IDIgNS41IDMgNS41IDUuNVY4QzUuNSA5LjMgNC41IDEwIDIgMTBDNC41IDEwIDUuNSAxMC43IDUuNSAxMlYxNC41QzUuNSAxNyA2IDE4IDkgMThNMTUgMkMxOCAyIDE4LjUgMyAxOC41IDUuNVY4QzE4LjUgOS4zIDE5LjUgMTAgMjIgMTBDMTkuNSAxMCAxOC41IDEwLjcgMTguNSAxMlYxNC41QzE4LjUgMTcgMTggMTggMTUgMTgiLz48L3N2Zz4%3D" alt="thanks.dev"></a>
+  <a href="https://github.com/sponsors/cedricdelpoux"><img src="https://img.shields.io/badge/GitHub%20Sponsors-ea4aaa?style=for-the-badge&logo=githubsponsors&logoColor=white" alt="GitHub Sponsors"></a>
+  <a href="https://ko-fi.com/cedricdelpoux"><img src="https://img.shields.io/badge/Ko--fi-FF5E5B?style=for-the-badge&logo=kofi&logoColor=white" alt="Ko-fi"></a>
+  <a href="https://paypal.me/cedricdelpoux"><img src="https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white" alt="PayPal"></a>
+</p>
+
+[badge-npm]: https://img.shields.io/npm/v/astro-loader-google-docs.svg?style=flat-square
+[badge-downloads]: https://img.shields.io/npm/dt/astro-loader-google-docs.svg?style=flat-square
+[badge-build]: https://img.shields.io/github/actions/workflow/status/cedricdelpoux/google-docs-sync/ci.yml?branch=main&style=flat-square
+[badge-prs]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
+[badge-licence]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
+[badge-sponsor]: https://img.shields.io/badge/sponsor-%E2%99%A5-ea4aaa.svg?style=flat-square
 [npm]: https://www.npmjs.com/package/astro-loader-google-docs
 [actions]: https://github.com/cedricdelpoux/google-docs-sync/actions/workflows/ci.yml
-[badge-npm]: https://img.shields.io/npm/v/astro-loader-google-docs.svg?style=flat-square
-[badge-build]: https://img.shields.io/github/actions/workflow/status/cedricdelpoux/google-docs-sync/ci.yml?branch=main&style=flat-square
-[badge-licence]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
+[contributing]: https://github.com/cedricdelpoux/google-docs-sync/blob/main/CONTRIBUTING.md
+[licence]: https://github.com/cedricdelpoux/google-docs-sync/blob/main/LICENCE.md
+[sponsor]: #support

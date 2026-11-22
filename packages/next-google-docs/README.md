@@ -8,7 +8,10 @@
 
 [![Npm][badge-npm]][npm]
 [![Build Status][badge-build]][actions]
-[![MIT license][badge-licence]](./LICENCE.md)
+[![Downloads][badge-downloads]][npm]
+[![PRs welcome][badge-prs]][contributing]
+[![MIT license][badge-licence]][licence]
+[![Sponsor][badge-sponsor]][sponsor]
 
 </div>
 
@@ -28,13 +31,13 @@ Next.js 14 or later is required, along with Node 22.12 or later.
 
 ## Token generation
 
-The sync needs 3 variables, in a `.env` file that Next.js loads. Run the following command at the root of your project to generate them:
+The sync needs 3 variables, in a `.env` file that Next.js loads. Run the following command at the root of your project to generate them, the [`google-docs-sync` documentation](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/google-docs-sync#token-generation) gives the details:
 
 ```shell
 npx google-docs-sync-token
 ```
 
-Add `.env` to your `.gitignore`: it holds secrets. Read the [google-docs-sync documentation](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/google-docs-sync#token-generation) for the details.
+Add `.env` to your `.gitignore`: it holds secrets.
 
 ## Usage
 
@@ -108,13 +111,11 @@ Set `extension: "mdx"` to author the documents as MDX.
 
 ### `withGoogleDocs(nextConfig, options)`
 
-Returns a Next.js config function. The options are the [google-docs-sync options](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/google-docs-sync#options) (`folder`, `outputDir`, `cacheDir`, `extension`, `imagesOptions`, `auth`, `logger`, the converter options), plus:
+Returns a Next.js config function. It takes the [options of `google-docs-sync`](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/google-docs-sync#options) (`folder`, `outputDir`, `cacheDir`, `extension`, `imagesOptions`, `auth`, `logger`, the converter options), plus:
 
-| Option    | Required | Type   | Default               | Example          |
-| --------- | -------- | ------ | --------------------- | ---------------- |
-| folder    | `true`   | String | `null`                | `"1Tn1dCbIc"`    |
-| outputDir | `false`  | String | `content/google-docs` | `"content/docs"` |
-| publicDir | `false`  | String | `public/google-docs`  | `"public/docs"`  |
+| Option    | Required | Type   | Default              | Example         |
+| --------- | -------- | ------ | -------------------- | --------------- |
+| publicDir | `false`  | String | `public/google-docs` | `"public/docs"` |
 
 `publicDir` must be inside `public`. It is managed by the adapter, which empties it before every sync, so give it a directory of its own. `outputDir` is managed by google-docs-sync in the same way.
 
@@ -141,16 +142,25 @@ Both functions read the files of `outputDir` and `publicDir` set in `withGoogleD
 
 [`examples/basic`](./examples/basic) is a minimal App Router site.
 
-## Contributing
+## Support
 
-See the [contributing guide](https://github.com/cedricdelpoux/google-docs-sync#contributing) of the repository.
+If this project is useful to you, you can give it a star, or support its maintenance:
 
-## Licence
+<p align="center">
+  <a href="https://thanks.dev/u/gh/cedricdelpoux"><img src="https://img.shields.io/badge/thanks.dev-000000?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyMCI%2BPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIuNiIgZD0iTTkgMkM2IDIgNS41IDMgNS41IDUuNVY4QzUuNSA5LjMgNC41IDEwIDIgMTBDNC41IDEwIDUuNSAxMC43IDUuNSAxMlYxNC41QzUuNSAxNyA2IDE4IDkgMThNMTUgMkMxOCAyIDE4LjUgMyAxOC41IDUuNVY4QzE4LjUgOS4zIDE5LjUgMTAgMjIgMTBDMTkuNSAxMCAxOC41IDEwLjcgMTguNSAxMlYxNC41QzE4LjUgMTcgMTggMTggMTUgMTgiLz48L3N2Zz4%3D" alt="thanks.dev"></a>
+  <a href="https://github.com/sponsors/cedricdelpoux"><img src="https://img.shields.io/badge/GitHub%20Sponsors-ea4aaa?style=for-the-badge&logo=githubsponsors&logoColor=white" alt="GitHub Sponsors"></a>
+  <a href="https://ko-fi.com/cedricdelpoux"><img src="https://img.shields.io/badge/Ko--fi-FF5E5B?style=for-the-badge&logo=kofi&logoColor=white" alt="Ko-fi"></a>
+  <a href="https://paypal.me/cedricdelpoux"><img src="https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white" alt="PayPal"></a>
+</p>
 
-[MIT](./LICENCE.md)
-
+[badge-npm]: https://img.shields.io/npm/v/next-google-docs.svg?style=flat-square
+[badge-downloads]: https://img.shields.io/npm/dt/next-google-docs.svg?style=flat-square
+[badge-build]: https://img.shields.io/github/actions/workflow/status/cedricdelpoux/google-docs-sync/ci.yml?branch=main&style=flat-square
+[badge-prs]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
+[badge-licence]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
+[badge-sponsor]: https://img.shields.io/badge/sponsor-%E2%99%A5-ea4aaa.svg?style=flat-square
 [npm]: https://www.npmjs.com/package/next-google-docs
-[badge-npm]: https://img.shields.io/npm/v/next-google-docs.svg
-[actions]: https://github.com/cedricdelpoux/google-docs-sync/actions
-[badge-build]: https://github.com/cedricdelpoux/google-docs-sync/actions/workflows/ci.yml/badge.svg
-[badge-licence]: https://img.shields.io/badge/licence-MIT-blue.svg
+[actions]: https://github.com/cedricdelpoux/google-docs-sync/actions/workflows/ci.yml
+[contributing]: https://github.com/cedricdelpoux/google-docs-sync/blob/main/CONTRIBUTING.md
+[licence]: https://github.com/cedricdelpoux/google-docs-sync/blob/main/LICENCE.md
+[sponsor]: #support
