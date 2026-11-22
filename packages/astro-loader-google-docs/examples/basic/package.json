@@ -1,0 +1,15 @@
+{
+  "name": "astro-loader-google-docs-basic",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "token": "google-docs-sync-token"
+  },
+  "dependencies": {
+    "astro": "^7.4.13",
+    "astro-loader-google-docs": "file:../.."
+  }
+}
