@@ -9,6 +9,8 @@ vi.mock("google-docs-sync", () => ({syncGoogleDocs: vi.fn()}))
 
 const BUILD = "phase-production-build"
 
+const cwd = process.cwd()
+
 let directory
 let withGoogleDocs
 
@@ -17,6 +19,7 @@ beforeEach(async () => {
   delete process.env.NEXT_GOOGLE_DOCS_SYNCED
   delete process.env.NEXT_GOOGLE_DOCS_OPTIONS
   directory = await mkdtemp(join(tmpdir(), "next-google-docs-"))
+  process.chdir(directory)
   await mkdir(join(directory, "content/images/home"), {recursive: true})
   await writeFile(join(directory, "content/images/home/a.png"), "png")
   await writeFile(join(directory, "content/home.md"), "# Home")
@@ -34,6 +37,7 @@ beforeEach(async () => {
 })
 
 afterEach(async () => {
+  process.chdir(cwd)
   await rm(directory, {recursive: true, force: true})
 })
 
@@ -106,26 +110,19 @@ test("resolves a config function with its phase and context", async () => {
 })
 
 test("copies the images, and only the images, to the public directory", async () => {
-  const previous = process.cwd()
-  process.chdir(directory)
-
   vi.mocked(syncGoogleDocs).mockResolvedValue({
     files: ["content/home.md", "content/images/home/a.png"],
     fetchedCount: 1,
     imagesCount: 1,
   })
 
-  try {
-    await withGoogleDocs({}, {...createOptions(), outputDir: "content"})(
-      BUILD,
-      {}
-    )
+  await withGoogleDocs({}, {...createOptions(), outputDir: "content"})(
+    BUILD,
+    {}
+  )
 
-    expect(await readFile("public/docs/images/home/a.png", "utf8")).toBe("png")
-    await expect(readFile("public/docs/home.md")).rejects.toThrow()
-  } finally {
-    process.chdir(previous)
-  }
+  expect(await readFile("public/docs/images/home/a.png", "utf8")).toBe("png")
+  await expect(readFile("public/docs/home.md")).rejects.toThrow()
 })
 
 test("rejects a public directory outside of public", () => {
