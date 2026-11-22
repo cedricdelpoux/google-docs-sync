@@ -76,3 +76,23 @@ test("leaves the links alone", async () => {
 test("returns null for an unknown slug", async () => {
   expect(await getDocument("/missing", paths)).toBeNull()
 })
+
+test("keeps the references that cannot be an image of the document", async () => {
+  await writeFile(
+    join(paths.directory, "links.md"),
+    "---\nslug: /links\n---\n\n![](../../outside.png) [File](readme)\n"
+  )
+
+  const {markdown} = await getDocument("/links", paths)
+
+  expect(markdown).toBe("\n![](../../outside.png) [File](readme)\n")
+})
+
+test("reads a document without frontmatter with empty metadata", async () => {
+  await writeFile(join(paths.directory, "plain.md"), "# Plain\n")
+  await writeFile(join(paths.directory, "empty.md"), "---\n\n---\n# Empty\n")
+
+  const documents = await getDocuments(paths)
+
+  expect(documents.filter((metadata) => !metadata.slug)).toEqual([{}, {}])
+})
