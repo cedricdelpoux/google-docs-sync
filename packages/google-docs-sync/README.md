@@ -1,4 +1,10 @@
-# google-docs-sync
+<div align="center">
+  <h1>google-docs-sync</h1>
+  <br/>
+  <p>
+    <img src="./logo.svg" alt="google-docs-sync" height="100px">
+  </p>
+  <br/>
 
 [![Npm][badge-npm]][npm]
 [![Build Status][badge-build]][actions]
@@ -7,6 +13,10 @@
 [![PRs welcome][badge-prs]][contributing]
 [![MIT license][badge-licence]][licence]
 [![Sponsor][badge-sponsor]][sponsor]
+
+</div>
+
+---
 
 `google-docs-sync` syncs a [Google Drive](https://drive.google.com/) folder of [Google Docs](https://docs.google.com/) to a local directory of Markdown or MDX files, with their images. It is the framework-agnostic core of [gatsby-source-google-docs](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/gatsby-source-google-docs), [astro-loader-google-docs](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/astro-loader-google-docs) and [next-google-docs](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/next-google-docs), and it works with any static site generator or script: use it from a build script, a content loader or the command line.
 

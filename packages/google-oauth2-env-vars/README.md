@@ -1,5 +1,10 @@
 <div align="center">
   <h1>google-oauth2-env-vars</h1>
+  <br/>
+  <p>
+    <img src="./logo.svg" alt="google-oauth2-env-vars" height="100px">
+  </p>
+  <br/>
 
 [![Npm][badge-npm]][npm]
 [![Build Status][badge-build]][actions]

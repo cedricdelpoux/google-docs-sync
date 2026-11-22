@@ -17,6 +17,18 @@ npm workspaces monorepo. Everything is ESM or plain JavaScript checked with tsc 
 - The repository is `cedricdelpoux/google-docs-sync` on GitHub (formerly `gatsby-source-google-docs`), the `repository.url` of every package points to it.
 - Internal dependency ranges (`google-docs-to-markdown: ^1.0.1`) stay as they are: npm links the workspace packages while the versions satisfy the ranges.
 
+## Logos
+
+Each package has a `logo.svg` (the README header) and a table icon in `.github/assets/icons/<package>.svg` (the root README table). The root `logo.svg` is the `google-docs-sync` one.
+
+- The logo is the 2026 Google Docs blue doc, 145 px wide and 200 px high, centred on the 224 px square the badges are measured on: its bounding box is (0, 0, 800, 1100) in the doc's own units, scaled by 200/1100 and translated by (39.27, 12). The doc never moves to make room for a badge.
+- The bottom-right badge says what the package does. The bottom-left badge is the framework it plugs into, and only framework packages have one. Both are discs of radius 51 centred on the square's corners, (224, 224) and (0, 224), each with a transparent gap of radius 65 cut into the doc. There are no borders or strokes around any shape.
+- Every logo uses the same `viewBox="-53 -2 330 279"`, so the doc renders at the same size and place in every README header. It is the same box as in the strava-sync monorepo.
+- Badge colours, with a white glyph (Astro keeps its flame gradient, Next its fading N): sync `#0969DA`, markdown `#5F6368`, key (OAuth token) `#B45309`, Gatsby `#639`, Astro `#000`, Next `#000`. A new feature or framework gets its own colour, distinct from these and from the doc blue. The sync, markdown and Gatsby colours are the ones of strava-sync.
+- Features: `google-docs-sync` is sync, `google-docs-to-markdown` is markdown, `google-oauth2-env-vars` is key. The three adapters get their framework bottom-left and sync bottom-right.
+- The table icon is the feature disc alone, or for a framework package, the framework disc on the left, partly hidden behind the feature disc on the right, both the same size, with a gap cut between them.
+- Every package README starts with the same centred header: `<div align="center">`, the `<h1>`, the logo at `height="100px"`, then the badge row in the same block.
+
 ## Commands
 
 Run from the root.

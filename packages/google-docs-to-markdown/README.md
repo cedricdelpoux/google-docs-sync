@@ -1,4 +1,10 @@
-# google-docs-to-markdown
+<div align="center">
+  <h1>google-docs-to-markdown</h1>
+  <br/>
+  <p>
+    <img src="./logo.svg" alt="google-docs-to-markdown" height="100px">
+  </p>
+  <br/>
 
 [![Npm][badge-npm]][npm]
 [![Build Status][badge-build]][actions]
@@ -7,6 +13,10 @@
 [![PRs welcome][badge-prs]][contributing]
 [![MIT license][badge-licence]][licence]
 [![Sponsor][badge-sponsor]][sponsor]
+
+</div>
+
+---
 
 `google-docs-to-markdown` converts [Google Docs](https://docs.google.com/) to Markdown or MDX.
 
