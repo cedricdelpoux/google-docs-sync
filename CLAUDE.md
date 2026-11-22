@@ -42,7 +42,7 @@ Run from the root.
 
 ## Commits
 
-Conventional Commits with the package name as scope when a commit touches one package (`fix(google-docs-sync): keep the cache when a fetch fails`). A commit that spans several packages or the whole repo has no scope.
+Commits follow Conventional Commits. When a commit touches a single package, the package name is its scope, as in `fix(google-docs-sync): keep the cache when a fetch fails` or `fix(google-docs-to-markdown): keep the table alignment`. A commit that spans several packages or only root files has no scope, as in `ci: ...` or `docs: ...`. Prefer one commit per package: when a change touches several packages, split it into one scoped commit per package, plus an unscoped commit for root files if needed. The release commit is `chore: bump packages versions`.
 
 ## Releases
 
