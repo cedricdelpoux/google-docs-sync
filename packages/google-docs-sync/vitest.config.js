@@ -5,7 +5,7 @@ export default defineConfig({
     exclude: [...configDefaults.exclude, ".claude/**"],
     coverage: {
       include: ["index.js", "lib/**"],
-      reporter: ["text"],
+      reporter: ["text", "lcov"],
     },
   },
 })

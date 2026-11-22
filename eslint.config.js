@@ -6,6 +6,7 @@ export default [
     ignores: [
       ".claude/**",
       "**/types/**",
+      "**/coverage/**",
       "**/examples/*/.cache/**",
       "**/examples/*/.next/**",
       "**/examples/*/public/**",

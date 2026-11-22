@@ -1,0 +1,34 @@
+coverage:
+  status:
+    project:
+      default:
+        informational: true
+    patch:
+      default:
+        informational: true
+
+comment:
+  layout: "condensed_header, flags"
+
+flag_management:
+  default_rules:
+    carryforward: true
+  individual_flags:
+    - name: astro-loader-google-docs
+      paths:
+        - packages/astro-loader-google-docs/
+    - name: gatsby-source-google-docs
+      paths:
+        - packages/gatsby-source-google-docs/
+    - name: google-docs-sync
+      paths:
+        - packages/google-docs-sync/
+    - name: google-docs-to-markdown
+      paths:
+        - packages/google-docs-to-markdown/
+    - name: google-oauth2-env-vars
+      paths:
+        - packages/google-oauth2-env-vars/
+    - name: next-google-docs
+      paths:
+        - packages/next-google-docs/

@@ -57,7 +57,7 @@
   "scripts": {
     "build": "tsc",
     "lint": "eslint . && tsc --noEmit",
-    "test": "node --test",
+    "test": "mkdir -p coverage && node --test --experimental-test-coverage --test-coverage-exclude='test/**' --test-reporter=spec --test-reporter-destination=stdout --test-reporter=lcov --test-reporter-destination=coverage/lcov.info",
     "prepack": "npm run build",
     "prepublishOnly": "npm run lint && npm test"
   }

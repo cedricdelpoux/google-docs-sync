@@ -31,3 +31,51 @@ jobs:
       - run: npm run lint
 
       - run: npm test
+
+      - uses: codecov/codecov-action@v7
+        if: matrix.node-version == 24
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: packages/astro-loader-google-docs/coverage/lcov.info
+          flags: astro-loader-google-docs
+          fail_ci_if_error: false
+
+      - uses: codecov/codecov-action@v7
+        if: matrix.node-version == 24
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: packages/gatsby-source-google-docs/coverage/lcov.info
+          flags: gatsby-source-google-docs
+          fail_ci_if_error: false
+
+      - uses: codecov/codecov-action@v7
+        if: matrix.node-version == 24
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: packages/google-docs-sync/coverage/lcov.info
+          flags: google-docs-sync
+          fail_ci_if_error: false
+
+      - uses: codecov/codecov-action@v7
+        if: matrix.node-version == 24
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: packages/google-docs-to-markdown/coverage/lcov.info
+          flags: google-docs-to-markdown
+          fail_ci_if_error: false
+
+      - uses: codecov/codecov-action@v7
+        if: matrix.node-version == 24
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: packages/google-oauth2-env-vars/coverage/lcov.info
+          flags: google-oauth2-env-vars
+          fail_ci_if_error: false
+
+      - uses: codecov/codecov-action@v7
+        if: matrix.node-version == 24
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: packages/next-google-docs/coverage/lcov.info
+          flags: next-google-docs
+          fail_ci_if_error: false
