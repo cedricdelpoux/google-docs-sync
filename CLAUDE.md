@@ -47,5 +47,6 @@ Independent versions with changesets (`.changeset/config.json`, base branch `mai
 - A change to a package comes with a changeset: `npm run changeset`.
 - To release, version locally and push to `main`: `npx npm@11 run version-packages` (bumps the versions, writes the changelogs, refreshes the lock), then commit `chore: version packages`. No "Version packages" pull request: the repo has a single maintainer.
 - `.github/workflows/release.yml` runs `changesets/action` on `main`. With no pending changeset it publishes what npm does not have yet (`npm run release`, i.e. `changeset publish`) through npm trusted publishing (OIDC, no token). A pushed changeset that was not versioned makes it open a "Version packages" pull request instead: close it and version locally.
+- npm stages each new version for a few minutes before it shows up. A push made during that window starts a Release run that tries to publish it again and fails with `E409 Cannot publish over previously staged version`: nothing is wrong, rerun it once the version is `latest` (`gh run rerun <id>`).
 - Tags are `<package>@<version>`. The ones imported before the merge are `google-docs-to-markdown@v1.0.1` and `google-oauth2-env-vars@v2.0.0`, the gatsby plugin keeps its old `vX.Y.Z` tags.
 - `.github/workflows/ci.yml` runs lint and tests on Node 22 and 24 (Gatsby 5 does not support Node 26).
