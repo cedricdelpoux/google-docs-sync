@@ -1,0 +1,62 @@
+{
+  "name": "next-google-docs",
+  "version": "0.0.0",
+  "description": "Next.js integration to use Google Docs as a data source",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cedricdelpoux/google-docs-sync.git",
+    "directory": "packages/next-google-docs"
+  },
+  "author": "Cédric Delpoux <cedric.delpoux@gmail.com>",
+  "license": "MIT",
+  "keywords": [
+    "next",
+    "next.js",
+    "nextjs",
+    "next-plugin",
+    "nextjs-plugin",
+    "next-config",
+    "app-router",
+    "google",
+    "google-docs",
+    "google-drive",
+    "docs",
+    "markdown",
+    "mdx",
+    "cms"
+  ],
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "default": "./index.js"
+    },
+    "./documents": {
+      "types": "./types/lib/documents.d.ts",
+      "default": "./lib/documents.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "lib",
+    "types"
+  ],
+  "engines": {
+    "node": ">=22.12"
+  },
+  "peerDependencies": {
+    "next": ">=14.0.0"
+  },
+  "dependencies": {
+    "google-docs-sync": "^0.1.0",
+    "yaml": "^2.9.1"
+  },
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint . && tsc --noEmit",
+    "test": "vitest run --coverage",
+    "prepack": "npm run build",
+    "prepublishOnly": "npm run lint && npm test"
+  }
+}

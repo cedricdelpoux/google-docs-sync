@@ -7,6 +7,7 @@ export default [
       ".claude/**",
       "**/types/**",
       "**/examples/*/.cache/**",
+      "**/examples/*/.next/**",
       "**/examples/*/public/**",
       "**/examples/*/dist/**",
       "**/examples/*/.astro/**",
