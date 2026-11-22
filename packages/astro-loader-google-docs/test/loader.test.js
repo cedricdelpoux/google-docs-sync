@@ -239,3 +239,20 @@ test("accepts the comments of a document, and does not require them", () => {
   expect(comments[0].createdTime).toBeInstanceOf(Date)
   expect(comments[0].replies[0].author.displayName).toBe("Bob")
 })
+
+test("stores empty data for a document with an empty frontmatter", async () => {
+  mockDocuments([
+    {
+      filePath: "/site/content/google-docs/index.md",
+      markdown: "---\n---\n# Home\n",
+    },
+  ])
+  const context = createContext()
+
+  await load(context)
+
+  expect(context.store.get("index")).toMatchObject({
+    data: {},
+    body: "# Home\n",
+  })
+})
