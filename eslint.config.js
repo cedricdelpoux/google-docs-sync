@@ -8,6 +8,8 @@ export default [
       "**/types/**",
       "**/examples/*/.cache/**",
       "**/examples/*/public/**",
+      "**/examples/*/dist/**",
+      "**/examples/*/.astro/**",
       "**/node_modules/**",
     ],
   },

@@ -4,3 +4,5 @@ types
 **/examples/*/.cache
 **/examples/*/public
 package-lock.json
+**/examples/*/dist
+**/examples/*/.astro
