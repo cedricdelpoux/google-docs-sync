@@ -40,12 +40,16 @@ Run from the root.
 - `npm run format`: `prettier --write .`.
 - `npm pack --dry-run -w <package>`: check the published files.
 
+## Commits
+
+Conventional Commits with the package name as scope when a commit touches one package (`fix(google-docs-sync): keep the cache when a fetch fails`). A commit that spans several packages or the whole repo has no scope.
+
 ## Releases
 
 Independent versions with changesets (`.changeset/config.json`, base branch `main`).
 
 - A change to a package comes with a changeset: `npm run changeset`.
-- To release, version locally and push to `main`: `npx npm@11 run version-packages` (bumps the versions, writes the changelogs, refreshes the lock), then commit `chore: version packages`. No "Version packages" pull request: the repo has a single maintainer.
+- To release, version locally and push to `main`: `npx npm@11 run version-packages` (bumps the versions, writes the changelogs, refreshes the lock), then commit `chore: bump packages versions`. No "Version packages" pull request: the repo has a single maintainer.
 - `.github/workflows/release.yml` runs `changesets/action` on `main`. With no pending changeset it publishes what npm does not have yet (`npm run release`, i.e. `changeset publish`) through npm trusted publishing (OIDC, no token). A pushed changeset that was not versioned makes it open a "Version packages" pull request instead: close it and version locally.
 - npm stages each new version for a few minutes before it shows up. A push made during that window starts a Release run that tries to publish it again and fails with `E409 Cannot publish over previously staged version`: nothing is wrong, rerun it once the version is `latest` (`gh run rerun <id>`).
 - Tags are `<package>@<version>`. The ones imported before the merge are `google-docs-to-markdown@v1.0.1` and `google-oauth2-env-vars@v2.0.0`, the gatsby plugin keeps its old `vX.Y.Z` tags.
