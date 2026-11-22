@@ -1,0 +1,27 @@
+---
+import {getCollection, render} from "astro:content"
+
+export async function getStaticPaths() {
+  const docs = await getCollection("docs")
+
+  return docs.map((doc) => ({
+    params: {path: doc.id === "index" ? "home" : doc.id},
+    props: {doc},
+  }))
+}
+
+const {doc} = Astro.props
+const {Content} = await render(doc)
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>{doc.data.name}</title>
+  </head>
+  <body>
+    <a href="/">All documents</a>
+    <h1>{doc.data.name}</h1>
+    <Content />
+  </body>
+</html>
