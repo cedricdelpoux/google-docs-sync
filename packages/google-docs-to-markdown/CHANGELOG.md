@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.4
+
+### Patch Changes
+
+- c7a2847: Give every package a logo in the same family, shown in its README header.
+
 ## 2.0.3
 
 ### Patch Changes

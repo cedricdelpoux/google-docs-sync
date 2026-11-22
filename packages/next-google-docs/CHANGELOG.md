@@ -1,5 +1,13 @@
 # next-google-docs
 
+## 0.2.1
+
+### Patch Changes
+
+- c7a2847: Give every package a logo in the same family, shown in its README header.
+- Updated dependencies [c7a2847]
+  - google-docs-sync@0.2.1
+
 ## 0.2.0
 
 ### Minor Changes
