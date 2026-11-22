@@ -198,6 +198,20 @@ test("passes the root folder metadata down as well", async () => {
   expect(file.locale).toBe("fr")
 })
 
+test("warns about a root folder description that is not valid YAML", async () => {
+  drive(
+    {[ROOT]: [document({name: "Home"})]},
+    {rootDescription: "title: Hello: world\nslug: /hi"}
+  )
+
+  const [file] = await fetchFiles({folder: ROOT}, {logger})
+
+  expect(file.slug).toBe("/home")
+  expect(logger.warn).toHaveBeenCalledWith(
+    expect.stringContaining("is not valid YAML")
+  )
+})
+
 test("keeps a `skip` folder out of the slug but not out of the path", async () => {
   // Organising documents on Drive should not force that hierarchy on the URLs
   drive({
