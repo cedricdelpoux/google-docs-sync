@@ -17,8 +17,6 @@ test("detects gatsby-plugin-mdx", () => {
 })
 
 test("prefers mdx when both are installed", () => {
-  // A site can source markdown from elsewhere with remark while its Google Docs
-  // documents are written as ".mdx"
   const store = createStore("gatsby-transformer-remark", "gatsby-plugin-mdx")
 
   expect(getTransformer({store})).toBe("mdx")

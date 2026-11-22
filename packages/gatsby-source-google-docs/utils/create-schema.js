@@ -1,16 +1,9 @@
 import {getTransformer, TRANSFORMERS} from "./get-transformer.js"
 
 /**
- * Describe the frontmatter this plugin writes.
- *
- * Everything a document carries now travels in its frontmatter, so the types
- * have to be declared explicitly: Gatsby would otherwise infer `breadcrumb`
- * and `cover` from whichever document happens to be read first, and would
- * leave `cover.image` as a plain string instead of a `File`.
- *
- * The fields are added to the transformer's own frontmatter type, which is
- * shared with any other markdown the site sources. They are all nullable on
- * purpose: for those other files they are simply absent.
+ * Declare the frontmatter, so that Gatsby neither infers it from the first
+ * document read nor leaves `cover.image` a string instead of a `File`. The
+ * type is shared with the other markdown of the site, hence nullable fields.
  */
 export const createSchema = ({actions, store, reporter}) => {
   const {createTypes} = actions

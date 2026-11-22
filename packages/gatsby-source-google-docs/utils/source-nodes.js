@@ -39,7 +39,7 @@ export const sourceNodes = async (
     timer.start()
     timer.setStatus("fetching Google Docs documents")
 
-    // Kept out of the Gatsby cache, which Gatsby empties on its own
+    // Not the Gatsby cache, which Gatsby empties on its own
     const siteDirectory = gatsbyStore
       ? gatsbyStore.getState().program.directory
       : process.cwd()
@@ -51,11 +51,6 @@ export const sourceNodes = async (
         logger: createLogger(reporter),
       })
 
-    // The documents and their images are plain files now, so they are sourced
-    // like any other local file. Creating the `File` nodes here rather than
-    // asking the user to add a `gatsby-source-filesystem` instance keeps the
-    // configuration to a single plugin, and guarantees the nodes exist by the
-    // time the transformers run.
     const contents = new Map(
       documents.map(({filePath, markdown}) => [resolve(filePath), markdown])
     )
@@ -70,18 +65,12 @@ export const sourceNodes = async (
       )
       const content = contents.get(absolutePath)
 
-      // Gatsby's `loadNodeContent` returns `internal.content` right away when
-      // it is a string, and only otherwise asks the plugin that owns the node
-      // to read the file. Filling it in here keeps the transformers working
-      // without the site having to configure `gatsby-source-filesystem`.
+      // Spares `loadNodeContent` the plugin that owns the node
       if (content !== undefined) {
         fileNode.internal.content = content
       }
 
-      // `File` is owned by `gatsby-source-filesystem`, and a site that runs
-      // its own instance of it has already claimed the type. Naming it as the
-      // creating plugin is what `createRemoteFileNode` does, and what keeps
-      // Gatsby from rejecting the node as belonging to another plugin.
+      // `File` belongs to `gatsby-source-filesystem`, Gatsby rejects another owner
       createNode(fileNode, {name: "gatsby-source-filesystem"})
     }
 
@@ -91,8 +80,6 @@ export const sourceNodes = async (
     )
 
     timer.end()
-
-    return
   } catch (e) {
     if (options.debug) {
       reporter.panic("source-google-docs: ", e)

@@ -12,12 +12,8 @@ let cwd
 let directory
 
 beforeEach(async () => {
-  // `createPages` resolves both the templates and `outputDir` from the working
-  // directory, the way Gatsby runs it from the root of a site
   cwd = process.cwd()
   process.chdir(await mkdtemp(join(tmpdir(), "gsgd-pages-")))
-  // On macOS the temporary directory is reached through a symlink, and the
-  // plugin compares resolved paths
   directory = process.cwd()
 
   await mkdir("src/templates", {recursive: true})
@@ -79,8 +75,6 @@ test("uses the template named in the document metadata", async () => {
 })
 
 test("hands the file to compile to gatsby-plugin-mdx", async () => {
-  // Since v4 the document body only reaches the template as `children` when the
-  // component path carries the file
   const api = createApi({nodes: [createMdxNode({})], transformer: "mdx"})
 
   await createPages(api, {createPages: true})
@@ -99,7 +93,6 @@ test("skips a document with `page: false`", async () => {
 })
 
 test("skips markdown the site sources from somewhere else", async () => {
-  // `allMarkdownRemark` holds every markdown file of the site, not only ours
   const api = createApi({
     nodes: [
       {

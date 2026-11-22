@@ -84,14 +84,10 @@ test("creates a File node for every written document", async () => {
 
   expect(home.node.absolutePath).toBe(filePath)
   expect(home.node.extension).toBe("md")
-  // `loadNodeContent` hands the transformers this string directly, so they
-  // work without the site configuring `gatsby-source-filesystem`
   expect(home.node.internal.content).toBe(MARKDOWN)
 })
 
 test("declares the File nodes as owned by gatsby-source-filesystem", async () => {
-  // Gatsby 5 rejects a node whose type another plugin has already claimed, and
-  // a site running its own `gatsby-source-filesystem` instance has claimed it
   const filePath = await writeOutputFile("home.md")
 
   syncGoogleDocs.mockResolvedValue({
@@ -128,8 +124,6 @@ test("creates File nodes for the images too", async () => {
   const {"cover.png": cover} = nodesByName(api.actions.createNode)
 
   expect(cover.node.absolutePath).toBe(imagePath)
-  // Only the documents carry their content: an image is read from disk by
-  // whoever needs its bytes
   expect(cover.node.internal.content).toBeUndefined()
 })
 

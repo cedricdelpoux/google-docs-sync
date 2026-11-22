@@ -26,9 +26,6 @@ export const createPages = async (
   const isMdx = transformer === "mdx"
   const fields = options.pageContext || []
 
-  // The path of the file each node came from: it tells the documents of this
-  // plugin apart from any other markdown the site sources, and MDX needs it on
-  // the component path anyway.
   const filePathField = isMdx
     ? "internal { contentFilePath }"
     : "fileAbsolutePath"
@@ -65,8 +62,7 @@ export const createPages = async (
         ? node.internal.contentFilePath
         : node.fileAbsolutePath
 
-      // Other markdown of the site shares these GraphQL types, and must not
-      // get pages created for it here.
+      // The other markdown of the site shares these types
       if (!contentFilePath || !resolve(contentFilePath).startsWith(outputDir)) {
         return
       }
@@ -97,17 +93,12 @@ export const createPages = async (
 
       createPage({
         path: slug,
-        // Since v4, `gatsby-plugin-mdx` renders the document body as the
-        // template's `children`, and only wires it up when the component path
-        // carries the file to compile.
+        // `gatsby-plugin-mdx` only renders the body from this file query
         component: isMdx
           ? `${component}?__contentFilePath=${contentFilePath}`
           : component,
         context: {
-          // `slug` is provided explicitly because Gatsby's auto-injected
-          // `path` variable is normalized by the `trailingSlash` option
-          // (defaults to "always" since Gatsby 5) and no longer matches
-          // the raw `slug` stored in the frontmatter.
+          // Gatsby's own `path` variable follows `trailingSlash`
           slug,
           ...context,
         },
