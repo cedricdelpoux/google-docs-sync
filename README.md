@@ -1,4 +1,4 @@
-<div>
+<div align="center">
   <h1>google-docs-sync</h1>
   <br/>
   <p>
@@ -18,14 +18,14 @@
 
 Use Google Docs as a content source. This monorepo holds the packages that read a Google Doc, convert it to Markdown or MDX, and handle the Google authentication they need.
 
-|                                                                      | Package                                                             | Version                      | Description                                                              |
-| :------------------------------------------------------------------: | ------------------------------------------------------------------- | ---------------------------- | ------------------------------------------------------------------------ |
-|  <img src=".github/assets/icons/gatsby.svg" width="20" height="20">  | [`gatsby-source-google-docs`](./packages/gatsby-source-google-docs) | [![npm][v-gatsby]][n-gatsby] | Gatsby plugin that uses Google Docs as a data source                     |
-|  <img src=".github/assets/icons/astro.svg" width="20" height="20">   | [`astro-loader-google-docs`](./packages/astro-loader-google-docs)   | [![npm][v-astro]][n-astro]   | Astro content loader that uses Google Docs as a collection               |
-|   <img src=".github/assets/icons/next.svg" width="20" height="20">   | [`next-google-docs`](./packages/next-google-docs)                   | [![npm][v-next]][n-next]     | Next.js adapter that syncs Google Docs at build time                     |
-|   <img src=".github/assets/icons/sync.svg" width="20" height="20">   | [`google-docs-sync`](./packages/google-docs-sync)                   | [![npm][v-sync]][n-sync]     | Sync a Google Drive folder of Google Docs to local Markdown or MDX files |
-| <img src=".github/assets/icons/markdown.svg" width="20" height="20"> | [`google-docs-to-markdown`](./packages/google-docs-to-markdown)     | [![npm][v-md]][n-md]         | Convert a Google Docs API document to Markdown or MDX                    |
-|   <img src=".github/assets/icons/key.svg" width="20" height="20">    | [`google-oauth2-env-vars`](./packages/google-oauth2-env-vars)       | [![npm][v-oauth]][n-oauth]   | Generate and cache Google OAuth 2.0 tokens in `.env` files               |
+|                                                                                       | Package                                                             | Version                      | Description                                                              |
+| :-----------------------------------------------------------------------------------: | ------------------------------------------------------------------- | ---------------------------- | ------------------------------------------------------------------------ |
+| <img src=".github/assets/icons/gatsby-source-google-docs.svg" width="20" height="20"> | [`gatsby-source-google-docs`](./packages/gatsby-source-google-docs) | [![npm][v-gatsby]][n-gatsby] | Gatsby plugin that uses Google Docs as a data source                     |
+| <img src=".github/assets/icons/astro-loader-google-docs.svg" width="20" height="20">  | [`astro-loader-google-docs`](./packages/astro-loader-google-docs)   | [![npm][v-astro]][n-astro]   | Astro content loader that uses Google Docs as a collection               |
+|     <img src=".github/assets/icons/next-google-docs.svg" width="20" height="20">      | [`next-google-docs`](./packages/next-google-docs)                   | [![npm][v-next]][n-next]     | Next.js adapter that syncs Google Docs at build time                     |
+|     <img src=".github/assets/icons/google-docs-sync.svg" width="20" height="20">      | [`google-docs-sync`](./packages/google-docs-sync)                   | [![npm][v-sync]][n-sync]     | Sync a Google Drive folder of Google Docs to local Markdown or MDX files |
+|  <img src=".github/assets/icons/google-docs-to-markdown.svg" width="20" height="20">  | [`google-docs-to-markdown`](./packages/google-docs-to-markdown)     | [![npm][v-md]][n-md]         | Convert a Google Docs API document to Markdown or MDX                    |
+|  <img src=".github/assets/icons/google-oauth2-env-vars.svg" width="20" height="20">   | [`google-oauth2-env-vars`](./packages/google-oauth2-env-vars)       | [![npm][v-oauth]][n-oauth]   | Generate and cache Google OAuth 2.0 tokens in `.env` files               |
 
 ## Which package do I need?
 
