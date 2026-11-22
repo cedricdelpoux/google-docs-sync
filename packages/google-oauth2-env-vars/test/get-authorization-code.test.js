@@ -1,4 +1,6 @@
 const assert = require("node:assert/strict")
+const {EventEmitter} = require("node:events")
+const http = require("node:http")
 const {beforeEach, test} = require("node:test")
 
 const {getAuthorizationCode} = require("../utils/get-authorization-code")
@@ -78,4 +80,17 @@ test("rejects when the given port is already in use", async () => {
   )
   await request("/callback?code=abc")
   assert.equal(await code, "abc")
+})
+
+test("rejects with the error of a server that fails for another reason", async (t) => {
+  const failure = Object.assign(new Error("EACCES"), {code: "EACCES"})
+  const server = Object.assign(new EventEmitter(), {
+    listen: () => setImmediate(() => server.emit("error", failure)),
+  })
+  t.mock.method(http, "createServer", () => server)
+
+  await assert.rejects(
+    getAuthorizationCode({port: 80, onListening: () => {}}),
+    failure
+  )
 })
