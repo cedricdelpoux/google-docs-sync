@@ -10,7 +10,7 @@
 [![Coverage][badge-coverage]][codecov]
 [![MIT license][badge-licence]](./LICENCE.md)
 [![PRs welcome][badge-prs]](./CONTRIBUTING.md)
-[![Sponsor][badge-sponsor]](#support)
+[![Sponsor][badge-sponsor]](#support-this-project)
 
 </div>
 
@@ -61,15 +61,17 @@ gatsby-source-google-docs, astro-loader-google-docs, next-google-docs
        └─ google-oauth2-env-vars
 ```
 
-## Support
+## Support this project
 
 <p align="center">
   <a href="https://github.com/cedricdelpoux"><img src="https://images.weserv.nl/?url=github.com/cedricdelpoux.png&w=128&h=128&fit=cover&mask=circle" width="64" height="64" alt="Cédric Delpoux"></a>
 </p>
 
 <p align="center">
-  Hi, I'm <a href="https://github.com/cedricdelpoux">Cédric</a>. Between my three kids, I build and maintain this project and many other open source packages in my free time.<br>
-  If my work is useful to you, a star or a small sponsorship helps a lot. Thank you!
+  Hi, I'm <a href="https://cedricdelpoux.fr/en">Cédric</a>.<br>
+  Between my three kids, I maintain <a href="https://github.com/cedricdelpoux?tab=repositories">open source projects</a> during my free time.<br>
+  If my work is useful to you, a star, a one-time tip or a monthly sponsorship all help a lot.<br>
+  Thank you very much!
 </p>
 
 <p align="center">
