@@ -2,9 +2,12 @@
 
 [![Npm][badge-npm]][npm]
 [![Build Status][badge-build]][actions]
-[![MIT license][badge-licence]](./LICENCE.md)
+[![Downloads][badge-downloads]][npm]
+[![PRs welcome][badge-prs]][contributing]
+[![MIT license][badge-licence]][licence]
+[![Sponsor][badge-sponsor]][sponsor]
 
-`google-docs-sync` syncs a [Google Drive](https://drive.google.com/) folder of [Google Docs](https://docs.google.com/) to a local directory of Markdown or MDX files, with their images. It is the framework-agnostic core of [gatsby-source-google-docs](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/gatsby-source-google-docs), and it works with any static site generator or script: use it from a build script, a content loader or the command line.
+`google-docs-sync` syncs a [Google Drive](https://drive.google.com/) folder of [Google Docs](https://docs.google.com/) to a local directory of Markdown or MDX files, with their images. It is the framework-agnostic core of [gatsby-source-google-docs](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/gatsby-source-google-docs), [astro-loader-google-docs](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/astro-loader-google-docs) and [next-google-docs](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/next-google-docs), and it works with any static site generator or script: use it from a build script, a content loader or the command line.
 
 The Markdown conversion is done by [google-docs-to-markdown](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/google-docs-to-markdown).
 
@@ -45,7 +48,13 @@ Run the following command at the root of your project to generate them:
 npx google-docs-sync-token
 ```
 
-The token can read Google Docs and Google Drive. `gatsby-source-google-docs-token` generates the same variables.
+The command walks you through the setup in the terminal:
+
+1. Enable the Google Docs API and the Google Drive API in the [Google Cloud console](https://console.cloud.google.com/apis/library).
+2. Create an OAuth 2.0 client of type "Desktop app", and paste its `Client ID` and `Client secret` when asked.
+3. Authorize the application in your browser.
+
+The variables are written to your `.env` file, which you should add to your `.gitignore`. The token can read Google Docs and Google Drive. The generation is done by [google-oauth2-env-vars](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/google-oauth2-env-vars), which tells more about what the command does.
 
 ## Usage
 
@@ -288,22 +297,25 @@ empty their own whenever their configuration or a dependency changes, and a
 continuous integration job never has one, so adding a dependency to your site
 would cost a complete refetch.
 
-## Contributing
+## Support
 
-- ⇄ Pull requests and ★ Stars are always welcome.
-- For bugs and feature requests, please [create an issue][github-issue].
+If this project is useful to you, you can give it a star, or support its maintenance:
 
-The Google Docs fixtures of the [google-docs-to-markdown](../google-docs-to-markdown) tests are saved from here:
-
-```shell
-npm run fixture -- <document id>
-```
-
-To release a version, describe the change with `npm run changeset` and commit the generated file with your pull request. See the [monorepo README](https://github.com/cedricdelpoux/google-docs-sync#releases).
+<p align="center">
+  <a href="https://thanks.dev/u/gh/cedricdelpoux"><img src="https://img.shields.io/badge/thanks.dev-000000?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyMCI%2BPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIuNiIgZD0iTTkgMkM2IDIgNS41IDMgNS41IDUuNVY4QzUuNSA5LjMgNC41IDEwIDIgMTBDNC41IDEwIDUuNSAxMC43IDUuNSAxMlYxNC41QzUuNSAxNyA2IDE4IDkgMThNMTUgMkMxOCAyIDE4LjUgMyAxOC41IDUuNVY4QzE4LjUgOS4zIDE5LjUgMTAgMjIgMTBDMTkuNSAxMCAxOC41IDEwLjcgMTguNSAxMlYxNC41QzE4LjUgMTcgMTggMTggMTUgMTgiLz48L3N2Zz4%3D" alt="thanks.dev"></a>
+  <a href="https://github.com/sponsors/cedricdelpoux"><img src="https://img.shields.io/badge/GitHub%20Sponsors-ea4aaa?style=for-the-badge&logo=githubsponsors&logoColor=white" alt="GitHub Sponsors"></a>
+  <a href="https://ko-fi.com/cedricdelpoux"><img src="https://img.shields.io/badge/Ko--fi-FF5E5B?style=for-the-badge&logo=kofi&logoColor=white" alt="Ko-fi"></a>
+  <a href="https://paypal.me/cedricdelpoux"><img src="https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white" alt="PayPal"></a>
+</p>
 
 [badge-npm]: https://img.shields.io/npm/v/google-docs-sync.svg?style=flat-square
+[badge-downloads]: https://img.shields.io/npm/dt/google-docs-sync.svg?style=flat-square
 [badge-build]: https://img.shields.io/github/actions/workflow/status/cedricdelpoux/google-docs-sync/ci.yml?branch=main&style=flat-square
+[badge-prs]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
 [badge-licence]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
-[npm]: https://www.npmjs.org/package/google-docs-sync
+[badge-sponsor]: https://img.shields.io/badge/sponsor-%E2%99%A5-ea4aaa.svg?style=flat-square
+[npm]: https://www.npmjs.com/package/google-docs-sync
 [actions]: https://github.com/cedricdelpoux/google-docs-sync/actions/workflows/ci.yml
-[github-issue]: https://github.com/cedricdelpoux/google-docs-sync/issues/new
+[contributing]: https://github.com/cedricdelpoux/google-docs-sync/blob/main/CONTRIBUTING.md
+[licence]: https://github.com/cedricdelpoux/google-docs-sync/blob/main/LICENCE.md
+[sponsor]: #support
