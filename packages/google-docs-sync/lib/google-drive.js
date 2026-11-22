@@ -44,9 +44,6 @@ const MIME_TYPE_FOLDER = "application/vnd.google-apps.folder"
 
 function evenlyChunk(arr, count) {
   const chunks = Math.ceil(arr.length / count)
-  if (chunks <= 1) {
-    return [arr]
-  }
   return _chunk(arr, Math.ceil(arr.length / chunks))
 }
 
