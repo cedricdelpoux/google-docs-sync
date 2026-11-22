@@ -26,12 +26,8 @@ const createLogger = (logger) => ({
 })
 
 /**
- * Content loader that syncs a Google Drive folder of Google Docs and stores
- * one entry per document.
- *
- * The entry id is the path of the document under `outputDir`, without its
- * extension. Images are written next to the documents, so Astro resolves and
- * optimises them like the images of any local Markdown file.
+ * Sync a Google Drive folder and store one entry per document, its id being
+ * the path under `outputDir` without the extension.
  *
  * @param {Omit<import("google-docs-sync").Options, "extension" | "logger">} options The options of `google-docs-sync`
  * @returns {import("astro/loaders").Loader}
