@@ -362,3 +362,72 @@ test("keeps the markdown usable when an image cannot be downloaded", async () =>
   expect(logger.warn).toHaveBeenCalled()
   expect(documents[0].markdown).toContain(IMAGE_URL)
 })
+
+test("writes a document without images and downloads nothing", async () => {
+  const {documents, imagesCount, downloadedImagesCount} = await write({
+    googleDocument: createGoogleDocument({
+      ...createDocument(),
+      inlineObjects: {},
+      body: {content: []},
+    }),
+    fromStore: false,
+  })
+
+  expect(downloadImage).not.toHaveBeenCalled()
+  expect(imagesCount).toBe(0)
+  expect(downloadedImagesCount).toBe(0)
+  expect(documents).toHaveLength(1)
+})
+
+test("downloads an image from its old URL when the fresh document no longer holds it", async () => {
+  const refetchDocument = vi.fn().mockResolvedValue({
+    ...createDocument(),
+    inlineObjects: {},
+    body: {content: []},
+  })
+
+  await writeDocuments({
+    documents: [{googleDocument: createGoogleDocument(), fromStore: true}],
+    options: {outputDir, extension: "md"},
+    logger,
+    store,
+    refetchDocument,
+  })
+
+  expect(downloadImage.mock.calls[0][0].url).toBe(IMAGE_URL)
+})
+
+test("names an untitled image after the image alone when the document has no name", async () => {
+  const document = createDocument()
+  delete document.inlineObjects[IMAGE_ID].inlineObjectProperties.embeddedObject
+    .title
+
+  await write({
+    googleDocument: new GoogleDocument(document, {
+      frontmatter: {id: "1Tn1dCbIc", name: "", slug: "/home"},
+    }),
+    fromStore: false,
+  })
+
+  expect(await readdir(join(outputDir, "images", "home"))).toEqual([
+    "image-1.png",
+  ])
+})
+
+test("warns about an image that cannot be copied and keeps its URL", async () => {
+  // A file where the images directory should be makes the copy fail
+  await mkdir(outputDir, {recursive: true})
+  await writeFile(join(outputDir, "images"), "not a directory")
+
+  const {documents} = await write({fromStore: false})
+
+  expect(logger.warn).toHaveBeenCalledWith(expect.stringContaining("ENOTDIR"))
+  expect(documents[0].markdown).toContain(IMAGE_URL)
+})
+
+test("fails when a document cannot be read to check whether it changed", async () => {
+  // A directory where the document file should be cannot be read as a file
+  await mkdir(join(outputDir, "home.md"), {recursive: true})
+
+  await expect(write({fromStore: false})).rejects.toThrow("EISDIR")
+})

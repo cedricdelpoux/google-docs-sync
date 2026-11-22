@@ -35,6 +35,10 @@ describe("getImagesDirectory", () => {
     expect(getImagesDirectory("/")).toBe("images/index")
   })
 
+  test("tolerates a missing slug", () => {
+    expect(getImagesDirectory(undefined)).toBe("images/index")
+  })
+
   test("keeps nested slugs apart from flattened ones", () => {
     // Kebab-casing would map both onto "foo-bar" and let one document
     // overwrite the other's images

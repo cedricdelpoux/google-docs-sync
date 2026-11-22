@@ -131,3 +131,21 @@ describe("prune", () => {
     expect(await store.readImages("removed")).toEqual(new Map())
   })
 })
+
+describe("unreadable store", () => {
+  const notADirectory = async () => {
+    await writeFile(dir, "a file where the store should be")
+  }
+
+  test("does not swallow another error while reading a document", async () => {
+    await notADirectory()
+
+    await expect(store.readDocument("1Tn1dCbIc")).rejects.toThrow("ENOTDIR")
+  })
+
+  test("does not swallow another error while listing the images", async () => {
+    await notADirectory()
+
+    await expect(store.readImages("1Tn1dCbIc")).rejects.toThrow("ENOTDIR")
+  })
+})

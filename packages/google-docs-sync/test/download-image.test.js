@@ -97,6 +97,14 @@ test("refuses a response that is not an image", async () => {
   ).rejects.toThrow(`unsupported image type "text/html"`)
 })
 
+test("refuses a response that tells nothing about its type", async () => {
+  global.fetch.mockImplementation(async () => new Response(null))
+
+  await expect(
+    downloadImage({url: URL, directory, name: "cover"})
+  ).rejects.toThrow(`unsupported image type "unknown"`)
+})
+
 test("leaves no half-written file behind", async () => {
   // Sharp would fail on it much later, with a far less obvious message
   global.fetch.mockImplementation(async () => {

@@ -1,4 +1,4 @@
-import {beforeEach, expect, test, vi} from "vitest"
+import {afterEach, beforeEach, expect, test, vi} from "vitest"
 
 import {fetchComments, fetchFiles} from "../lib/google-drive.js"
 
@@ -54,6 +54,10 @@ const bySlug = (files) =>
 
 beforeEach(() => {
   vi.clearAllMocks()
+})
+
+afterEach(() => {
+  vi.useRealTimers()
 })
 
 test("names, slugs and paths a document of the root folder", async () => {
@@ -321,4 +325,136 @@ test("gets no comments when Drive returns none", async () => {
   mockComments.mockResolvedValue({data: {}})
 
   expect(await fetchComments("doc-1", {auth: "auth"})).toEqual([])
+})
+
+const idsOfQuery = (q) =>
+  [...q.matchAll(/'([^']+)' in parents/g)].map(([, id]) => id)
+
+test("splits more than a hundred folders into evenly sized listings", async () => {
+  vi.useFakeTimers()
+  const folders = Array.from({length: 250}, (_, index) =>
+    folder({id: `f${index}`, name: `Folder ${index}`})
+  )
+  mockGet.mockResolvedValue({data: {}})
+  mockList.mockImplementation(async ({q}) => {
+    const ids = idsOfQuery(q)
+
+    if (ids.includes(ROOT)) return {data: {files: folders}}
+
+    return {
+      data: {
+        files: ids.map((id) => document({name: `Doc ${id}`, parents: [id]})),
+      },
+    }
+  })
+
+  const files = fetchFiles({folder: ROOT}, {logger})
+  await vi.runAllTimersAsync()
+
+  expect(await files).toHaveLength(250)
+  const sizes = mockList.mock.calls
+    .slice(1)
+    .map(([{q}]) => idsOfQuery(q).length)
+  expect(sizes).toEqual([84, 84, 82])
+})
+
+test("walks the folders found on the last page of a long listing", async () => {
+  mockGet.mockResolvedValue({data: {}})
+  mockList.mockImplementation(async ({q, pageToken}) => {
+    if (idsOfQuery(q).includes("f1")) {
+      return {data: {files: [document({name: "Nested", parents: ["f1"]})]}}
+    }
+
+    return pageToken
+      ? {data: {files: [folder({id: "f1", name: "Blog"})]}}
+      : {data: {files: [document({name: "First"})], nextPageToken: "page-2"}}
+  })
+
+  const files = await fetchFiles({folder: ROOT}, {logger})
+
+  expect(files.map((file) => file.slug)).toEqual(["/first", "/blog/nested"])
+})
+
+test("walks folders while it is still reading the pages of a listing", async () => {
+  vi.useFakeTimers()
+  const folders = Array.from({length: 120}, (_, index) =>
+    folder({id: `f${index}`, name: `Folder ${index}`})
+  )
+  mockGet.mockResolvedValue({data: {}})
+  mockList.mockImplementation(async ({q, pageToken}) => {
+    const ids = idsOfQuery(q)
+
+    if (!ids.includes(ROOT)) {
+      return {
+        data: {
+          files: ids.map((id) => document({name: `Doc ${id}`, parents: [id]})),
+        },
+      }
+    }
+
+    return {
+      data: {
+        files: pageToken === undefined ? folders : [],
+        nextPageToken:
+          pageToken === "page-3" ? undefined : `page-${pageToken ? 3 : 2}`,
+      },
+    }
+  })
+
+  const files = fetchFiles({folder: ROOT}, {logger})
+  await vi.runAllTimersAsync()
+
+  expect(await files).toHaveLength(120)
+})
+
+test("tells when the rate limit makes it wait, in debug mode", async () => {
+  vi.useFakeTimers()
+  mockGet.mockResolvedValue({data: {}})
+  mockList.mockResolvedValue({data: {files: []}})
+  const debugLogger = {warn: vi.fn(), info: vi.fn()}
+
+  const fetches = Array.from({length: 25}, () =>
+    fetchFiles({folder: ROOT, debug: true}, {logger: debugLogger})
+  )
+  await vi.runAllTimersAsync()
+  await Promise.all(fetches)
+
+  expect(debugLogger.info).toHaveBeenCalledWith(
+    expect.stringMatching(/^rate limit reached, waiting \d+\.\ds$/)
+  )
+})
+
+test("stays silent about the rate limit without the debug option", async () => {
+  vi.useFakeTimers()
+  mockGet.mockResolvedValue({data: {}})
+  mockList.mockResolvedValue({data: {files: []}})
+  const quietLogger = {warn: vi.fn(), info: vi.fn()}
+
+  const fetches = Array.from({length: 25}, () =>
+    fetchFiles({folder: ROOT}, {logger: quietLogger})
+  )
+  await vi.runAllTimersAsync()
+  await Promise.all(fetches)
+
+  expect(quietLogger.info).not.toHaveBeenCalled()
+})
+
+test("follows more than two pages of a long listing", async () => {
+  mockGet.mockResolvedValue({data: {}})
+  mockList
+    .mockResolvedValueOnce({
+      data: {files: [document({name: "First"})], nextPageToken: "page-2"},
+    })
+    .mockResolvedValueOnce({
+      data: {files: [document({name: "Second"})], nextPageToken: "page-3"},
+    })
+    .mockResolvedValueOnce({data: {files: [document({name: "Third"})]}})
+
+  const files = await fetchFiles({folder: ROOT}, {logger})
+
+  expect(Object.keys(bySlug(files)).sort()).toEqual([
+    "/first",
+    "/second",
+    "/third",
+  ])
 })
