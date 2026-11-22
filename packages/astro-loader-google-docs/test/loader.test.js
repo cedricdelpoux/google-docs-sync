@@ -211,3 +211,31 @@ test("exposes a schema that accepts the metadata of a document and keeps the cus
   expect(data.order).toBe(2)
   expect(data.date).toBeInstanceOf(Date)
 })
+
+test("accepts the comments of a document, and does not require them", () => {
+  const {schema} = googleDocsLoader({folder: "folder-1"})
+  const comment = {
+    id: "c1",
+    content: "Source?",
+    author: {displayName: "Ada"},
+    createdTime: "2026-09-01T10:00:00.000Z",
+    modifiedTime: "2026-09-01T10:00:00.000Z",
+    resolved: false,
+    quote: "the passage",
+    replies: [
+      {
+        id: "r1",
+        content: "Done",
+        author: {displayName: "Bob"},
+        createdTime: "2026-09-02T10:00:00.000Z",
+      },
+    ],
+  }
+
+  expect(schema.parse(METADATA).comments).toBeUndefined()
+
+  const {comments} = schema.parse({...METADATA, comments: [comment]})
+
+  expect(comments[0].createdTime).toBeInstanceOf(Date)
+  expect(comments[0].replies[0].author.displayName).toBe("Bob")
+})

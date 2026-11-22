@@ -1,7 +1,7 @@
 import {GoogleDocument} from "google-docs-to-markdown"
 
 import {fetchDocument} from "./fetch-document.js"
-import {fetchFiles} from "./google-drive.js"
+import {fetchComments, fetchFiles} from "./google-drive.js"
 
 /**
  * Fetch every document of the folder, reusing the ones the store already holds.
@@ -12,6 +12,9 @@ import {fetchFiles} from "./google-drive.js"
  * document that was stored, so it never has to be fetched again. Its metadata
  * still comes from the listing, so renaming a document or editing its
  * description is picked up whether it was fetched or not.
+ *
+ * The comments are fetched on every sync, never stored: Drive does not
+ * reliably move `modifiedTime` when a comment is added or resolved.
  */
 async function fetchDocuments({options, logger, store, auth}) {
   if (options.debug) {
@@ -50,10 +53,14 @@ async function fetchDocuments({options, logger, store, auth}) {
         })
       }
 
+      const comments = options.comments
+        ? await fetchComments(properties.id, {auth})
+        : undefined
+
       const googleDocument = new GoogleDocument(document, {
         ...options,
         mdx: options.extension === "mdx",
-        frontmatter: properties,
+        frontmatter: options.comments ? {...properties, comments} : properties,
         links,
       })
 

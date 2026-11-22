@@ -1,5 +1,6 @@
 import {drive as googleDrive} from "@googleapis/drive"
 import _kebabCase from "lodash/kebabCase.js"
+import _omit from "lodash/omit.js"
 import _chunk from "lodash/chunk.js"
 import _isPlainObject from "lodash/isPlainObject.js"
 import YAML from "yaml"
@@ -12,6 +13,18 @@ import {wait} from "./wait.js"
  */
 
 /**
+ * @typedef {object} Comment A comment of a document, with its replies
+ * @property {string} id
+ * @property {string} content
+ * @property {{displayName: string}} author
+ * @property {string} createdTime
+ * @property {string} modifiedTime
+ * @property {boolean} resolved
+ * @property {string} [quote] The passage of the document the comment is attached to
+ * @property {{id: string, content: string, author: {displayName: string}, createdTime: string, action?: "resolve" | "reopen"}[]} replies
+ */
+
+/**
  * @typedef {object} Metadata The frontmatter of a document
  * @property {string} name
  * @property {string} slug
@@ -19,7 +32,12 @@ import {wait} from "./wait.js"
  * @property {string | object} [description]
  * @property {{image: string, title: string, alt: string}} [cover]
  * @property {object[]} breadcrumb
+ * @property {Comment[]} [comments] Only with the `comments` option
  */
+
+const COMMENTS_PAGE_SIZE = 100
+const COMMENT_FIELDS =
+  "nextPageToken,comments(id,content,author/displayName,createdTime,modifiedTime,resolved,quotedFileContent/value,replies(id,content,author/displayName,createdTime,action,deleted))"
 
 const MIME_TYPE_DOCUMENT = "application/vnd.google-apps.document"
 const MIME_TYPE_FOLDER = "application/vnd.google-apps.folder"
@@ -270,6 +288,44 @@ async function fetchDocumentsFiles({drive, parents, options, logger}) {
   return fetchNextPage(res.data.nextPageToken)
 }
 
+const toComment = ({quotedFileContent, replies = [], ...comment}) => ({
+  ...comment,
+  ...(quotedFileContent?.value && {quote: quotedFileContent.value}),
+  replies: replies
+    .filter(({deleted}) => !deleted)
+    .map((reply) => _omit(reply, "deleted")),
+})
+
+/**
+ * Every comment of a document, the resolved ones included, the deleted ones
+ * left out by Drive.
+ *
+ * @param {string} fileId
+ * @param {{auth: import("google-auth-library").OAuth2Client}} clients
+ * @returns {Promise<Comment[]>}
+ */
+async function fetchComments(fileId, {auth}) {
+  const drive = googleDrive({version: "v3", auth})
+  const comments = []
+  let pageToken
+
+  do {
+    await rateLimit()
+
+    const res = await drive.comments.list({
+      fileId,
+      pageSize: COMMENTS_PAGE_SIZE,
+      fields: COMMENT_FIELDS,
+      pageToken,
+    })
+
+    comments.push(...(res.data.comments || []).map(toComment))
+    pageToken = res.data.nextPageToken
+  } while (pageToken)
+
+  return comments
+}
+
 /** @param {import("./options.js").SyncOptions} options */
 async function fetchFiles({folder, ...options}, {auth, logger}) {
   const drive = googleDrive({version: "v3", auth})
@@ -301,4 +357,4 @@ async function fetchFiles({folder, ...options}, {auth, logger}) {
   return documentsFiles
 }
 
-export {fetchFiles}
+export {fetchFiles, fetchComments}

@@ -128,12 +128,14 @@ The variables of the [token generation](#token-generation) are read from the env
 | cacheDir      | `false`  | String  | `".google-docs"`        | `".cache-docs"`                |
 | extension     | `false`  | String  | `"md"`                  | `"mdx"`                        |
 | imagesOptions | `false`  | Object  | `null`                  | `{width: 512}`                 |
+| comments      | `false`  | Boolean | `false`                 | `true`                         |
 | debug         | `false`  | Boolean | `false`                 | `true`                         |
 | auth          | `false`  | Object  | from the environment    | a `google-auth-library` client |
 | logger        | `false`  | Object  | `console`               | `{info, warn, error}`          |
 
 - `outputDir` is managed by the sync: any other file it contains is deleted, so point it at a directory of its own and add it to your `.gitignore`.
 - `imagesOptions` is the size the images are downloaded at, between 1 and 16383 (`width`, `height`, `crop`). Changing it downloads them again.
+- `comments` adds the comments of every document to its metadata, under `comments`: `{id, content, author: {displayName}, createdTime, modifiedTime, resolved, quote, replies}`, where `quote` is the passage of the document the comment is attached to and the `replies` have the same `id`, `content`, `author` and `createdTime`, plus an `action` (`resolve` or `reopen`) for the reply that resolves or reopens the thread. Resolved comments are kept with `resolved: true`, deleted ones are left out. They are written in the frontmatter, so the adapters read them like any other metadata. It costs one more Drive request per document on every sync, cached or not, and the existing `drive.readonly` scope is enough.
 - `logger` receives the messages of the sync: `warn` for what is skipped (a description that is not valid YAML, an image that could not be downloaded), `info` for the progress in `debug` mode.
 
 The conversion options of [google-docs-to-markdown](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/google-docs-to-markdown#options) are accepted too: `escapeMdxSyntax`, `demoteHeadings` (`true` by default here), `keepDefaultStyle` and the `skip*` ones. `mdx` follows `extension`, and `frontmatter` and `links` are filled by the sync.
@@ -288,6 +290,8 @@ The documents are stored as Google gave them, not as markdown: changing
 `demoteHeadings`, `extension` or any other option takes effect on the next
 sync without fetching anything again. Changing `imagesOptions` downloads the
 images again, since their size is part of the URL they are downloaded from.
+
+The comments are the exception: they are not stored, and the `comments` option fetches them again on every sync, one Drive request per document, because Google Drive does not reliably change the modification time of a document when a comment is added or resolved.
 
 > Add `.google-docs` to your `.gitignore`, or commit it to give your continuous
 > integration a folder it does not have to fetch. Delete it to fetch everything

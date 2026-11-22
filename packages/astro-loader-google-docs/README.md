@@ -88,6 +88,7 @@ The [`examples/basic`](./examples/basic) site lists the documents of a Drive fol
 
 - The `id` of an entry is the path of its file under `outputDir`, without the extension: `index` for the root document, `guides/install` for a nested one.
 - The `data` of an entry are the metadata of the document: `id`, `name`, `slug`, `path`, `date`, `createdTime`, `modifiedTime`, `breadcrumb`, `description`, `cover`, `related`, and the custom metadata of the Drive `description`.
+- With the [`comments` option](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/google-docs-sync#options), `data.comments` holds the comments of the document.
 - `createGoogleDocsSchema({image})` builds that schema. The loader declares it by default, so the schema of the collection is optional: define it to turn the covers into optimised images.
 
 ### Images

@@ -1,14 +1,18 @@
 import {beforeEach, expect, test, vi} from "vitest"
 
-import {fetchFiles} from "../lib/google-drive.js"
+import {fetchComments, fetchFiles} from "../lib/google-drive.js"
 
-const {mockList, mockGet} = vi.hoisted(() => ({
+const {mockList, mockGet, mockComments} = vi.hoisted(() => ({
+  mockComments: vi.fn(),
   mockList: vi.fn(),
   mockGet: vi.fn(),
 }))
 
 vi.mock("@googleapis/drive", () => ({
-  drive: () => ({files: {list: mockList, get: mockGet}}),
+  drive: () => ({
+    files: {list: mockList, get: mockGet},
+    comments: {list: mockComments},
+  }),
 }))
 
 const ROOT = "root-folder-id"
@@ -262,4 +266,59 @@ test("follows the pages of a long listing", async () => {
   expect(mockList).toHaveBeenCalledTimes(2)
   expect(mockList.mock.calls[1][0].pageToken).toBe("page-2")
   expect(Object.keys(bySlug(files)).sort()).toEqual(["/first", "/second"])
+})
+
+test("fetches the comments of a document, page after page, with explicit fields", async () => {
+  mockComments
+    .mockResolvedValueOnce({
+      data: {
+        nextPageToken: "page-2",
+        comments: [
+          {
+            id: "c1",
+            content: "Source?",
+            author: {displayName: "Ada"},
+            resolved: false,
+            quotedFileContent: {value: "the passage"},
+            replies: [
+              {id: "r1", content: "Done", deleted: false},
+              {id: "r2", content: "Gone", deleted: true},
+            ],
+          },
+        ],
+      },
+    })
+    .mockResolvedValueOnce({
+      data: {comments: [{id: "c2", content: "Typo", resolved: true}]},
+    })
+
+  const comments = await fetchComments("doc-1", {auth: "auth"})
+
+  expect(comments).toEqual([
+    {
+      id: "c1",
+      content: "Source?",
+      author: {displayName: "Ada"},
+      resolved: false,
+      quote: "the passage",
+      replies: [{id: "r1", content: "Done"}],
+    },
+    {id: "c2", content: "Typo", resolved: true, replies: []},
+  ])
+  expect(mockComments).toHaveBeenCalledTimes(2)
+  expect(mockComments.mock.calls[0][0]).toMatchObject({
+    fileId: "doc-1",
+    pageSize: 100,
+    pageToken: undefined,
+  })
+  expect(mockComments.mock.calls[0][0].fields).toContain(
+    "quotedFileContent/value"
+  )
+  expect(mockComments.mock.calls[1][0].pageToken).toBe("page-2")
+})
+
+test("gets no comments when Drive returns none", async () => {
+  mockComments.mockResolvedValue({data: {}})
+
+  expect(await fetchComments("doc-1", {auth: "auth"})).toEqual([])
 })

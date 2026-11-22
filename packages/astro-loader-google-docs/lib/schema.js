@@ -1,5 +1,26 @@
 import {z} from "astro/zod"
 
+const commentAuthor = z.object({displayName: z.string()})
+
+const comment = z.object({
+  id: z.string(),
+  content: z.string(),
+  author: commentAuthor,
+  createdTime: z.coerce.date(),
+  modifiedTime: z.coerce.date(),
+  resolved: z.boolean(),
+  quote: z.string().optional(),
+  replies: z.array(
+    z.object({
+      id: z.string(),
+      content: z.string().optional(),
+      author: commentAuthor,
+      createdTime: z.coerce.date(),
+      action: z.enum(["resolve", "reopen"]).optional(),
+    })
+  ),
+})
+
 /**
  * The data of a document: the metadata of the Drive file, completed by what
  * the Drive tree and the `description` of the document define. Custom
@@ -32,6 +53,7 @@ export const createGoogleDocsSchema = ({image} = {}) =>
         .optional(),
       breadcrumb: z.array(z.object({name: z.string(), slug: z.string()})),
       related: z.array(z.string()).optional(),
+      comments: z.array(comment).optional(),
       page: z.boolean().optional(),
       exclude: z.boolean().optional(),
       index: z.boolean().optional(),
