@@ -101,8 +101,8 @@ The images of the documents are written next to them in `outputDir`, and the Mar
 </p>
 
 <p align="center">
-  Hi, I'm <a href="https://github.com/cedricdelpoux">Cédric</a>. I build and maintain this project in my free time.<br>
-  If it is useful to you, a star or a small sponsorship helps a lot. Thank you!
+  Hi, I'm <a href="https://github.com/cedricdelpoux">Cédric</a>. Between my three kids, I build and maintain this project and many other open source packages in my free time.<br>
+  If my work is useful to you, a star or a small sponsorship helps a lot. Thank you!
 </p>
 
 <p align="center">
