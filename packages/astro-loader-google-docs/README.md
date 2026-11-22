@@ -94,15 +94,17 @@ The [`examples/basic`](./examples/basic) site lists the documents of a Drive fol
 
 The images of the documents are written next to them in `outputDir`, and the Markdown refers to them with relative paths. The loader renders each document relative to its file, so Astro treats them like the images of local Markdown files: they are optimised and fingerprinted at build time. Nothing has to be copied to `public/`.
 
-## Support
+## Support this project
 
 <p align="center">
   <a href="https://github.com/cedricdelpoux"><img src="https://images.weserv.nl/?url=github.com/cedricdelpoux.png&w=128&h=128&fit=cover&mask=circle" width="64" height="64" alt="Cédric Delpoux"></a>
 </p>
 
 <p align="center">
-  Hi, I'm <a href="https://github.com/cedricdelpoux">Cédric</a>. Between my three kids, I build and maintain this project and many other open source packages in my free time.<br>
-  If my work is useful to you, a star or a small sponsorship helps a lot. Thank you!
+  Hi, I'm <a href="https://cedricdelpoux.fr/en">Cédric</a>.<br>
+  Between my three kids, I maintain <a href="https://github.com/cedricdelpoux?tab=repositories">open source projects</a> during my free time.<br>
+  If my work is useful to you, a star, a one-time tip or a monthly sponsorship all help a lot.<br>
+  Thank you very much!
 </p>
 
 <p align="center">
@@ -124,4 +126,4 @@ The images of the documents are written next to them in `outputDir`, and the Mar
 [codecov]: https://app.codecov.io/gh/cedricdelpoux/google-docs-sync/tree/main/packages/astro-loader-google-docs
 [contributing]: https://github.com/cedricdelpoux/google-docs-sync/blob/main/CONTRIBUTING.md
 [licence]: https://github.com/cedricdelpoux/google-docs-sync/blob/main/LICENCE.md
-[sponsor]: #support
+[sponsor]: #support-this-project
