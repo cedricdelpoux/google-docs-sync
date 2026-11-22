@@ -1,5 +1,15 @@
 # astro-loader-google-docs
 
+## 0.1.3
+
+### Patch Changes
+
+- e95f1ab: Keep each README to the essentials: shared documentation lives in google-docs-sync and google-docs-to-markdown, and every package shows the same badges and support links.
+- 9373095: Show the test coverage of each package with a Codecov badge in its README.
+- Updated dependencies [e95f1ab]
+- Updated dependencies [9373095]
+  - google-docs-sync@0.1.3
+
 ## 0.1.2
 
 ### Patch Changes
