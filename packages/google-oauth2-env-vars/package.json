@@ -7,6 +7,10 @@
     "url": "git+https://github.com/cedricdelpoux/google-docs-sync.git",
     "directory": "packages/google-oauth2-env-vars"
   },
+  "homepage": "https://github.com/cedricdelpoux/google-docs-sync/tree/master/packages/google-oauth2-env-vars#readme",
+  "bugs": {
+    "url": "https://github.com/cedricdelpoux/google-docs-sync/issues"
+  },
   "author": {
     "name": "Cédric Delpoux",
     "email": "cedric.delpoux@gmail.com"

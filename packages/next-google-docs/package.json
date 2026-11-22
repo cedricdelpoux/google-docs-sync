@@ -7,6 +7,10 @@
     "url": "git+https://github.com/cedricdelpoux/google-docs-sync.git",
     "directory": "packages/next-google-docs"
   },
+  "homepage": "https://github.com/cedricdelpoux/google-docs-sync/tree/master/packages/next-google-docs#readme",
+  "bugs": {
+    "url": "https://github.com/cedricdelpoux/google-docs-sync/issues"
+  },
   "author": "Cédric Delpoux <cedric.delpoux@gmail.com>",
   "license": "MIT",
   "keywords": [

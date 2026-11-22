@@ -7,6 +7,10 @@
     "url": "git+https://github.com/cedricdelpoux/google-docs-sync.git",
     "directory": "packages/google-docs-to-markdown"
   },
+  "homepage": "https://github.com/cedricdelpoux/google-docs-sync/tree/master/packages/google-docs-to-markdown#readme",
+  "bugs": {
+    "url": "https://github.com/cedricdelpoux/google-docs-sync/issues"
+  },
   "author": "Cédric Delpoux <cedric.delpoux@gmail.com>",
   "license": "MIT",
   "keywords": [
