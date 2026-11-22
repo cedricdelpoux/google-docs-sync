@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.1.2
+
+### Patch Changes
+
+- b5643d0: Link the npm page to the package folder and the issues of the google-docs-sync repository.
+- Updated dependencies [b5643d0]
+  - google-docs-sync@0.1.1
+  - google-docs-to-markdown@2.0.1
+
 ## 3.1.1
 
 ### Patch Changes

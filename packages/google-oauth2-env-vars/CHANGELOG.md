@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.1
+
+### Patch Changes
+
+- b5643d0: Link the npm page to the package folder and the issues of the google-docs-sync repository.
+
 ## 2.0.0
 
 ### Breaking changes
