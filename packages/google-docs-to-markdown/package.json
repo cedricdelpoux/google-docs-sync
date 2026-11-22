@@ -11,6 +11,24 @@
   "bugs": {
     "url": "https://github.com/cedricdelpoux/google-docs-sync/issues"
   },
+  "funding": [
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/cedricdelpoux"
+    },
+    {
+      "type": "ko-fi",
+      "url": "https://ko-fi.com/cedricdelpoux"
+    },
+    {
+      "type": "thanks.dev",
+      "url": "https://thanks.dev/u/gh/cedricdelpoux"
+    },
+    {
+      "type": "paypal",
+      "url": "https://paypal.me/cedricdelpoux"
+    }
+  ],
   "author": "Cédric Delpoux <cedric.delpoux@gmail.com>",
   "license": "MIT",
   "keywords": [

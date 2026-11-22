@@ -9,6 +9,9 @@
 [![Build Status][badge-build]][actions]
 [![MIT license][badge-licence]](./LICENCE.md)
 [![PRs welcome][badge-prs]](#contributing)
+[![GitHub Sponsors][badge-github]](https://github.com/sponsors/cedricdelpoux)
+[![Ko-fi][badge-kofi]](https://ko-fi.com/cedricdelpoux)
+[![thanks.dev][badge-thanks]](https://thanks.dev/u/gh/cedricdelpoux)
 [![Paypal][badge-paypal]](https://paypal.me/cedricdelpoux)
 
 </div>
@@ -91,7 +94,14 @@ The packages are versioned independently with [changesets](https://github.com/ch
 
 ## Support
 
-If this project is useful to you, you can give it a star, or [sponsor it with PayPal](https://paypal.me/cedricdelpoux). You can also visit [cedricdelpoux.fr](https://cedricdelpoux.fr/en).
+If this project is useful to you, you can give it a star, or support its maintenance:
+
+- [GitHub Sponsors](https://github.com/sponsors/cedricdelpoux), monthly or one-time.
+- [Ko-fi](https://ko-fi.com/cedricdelpoux), for a one-time tip.
+- [thanks.dev](https://thanks.dev/u/gh/cedricdelpoux), which shares a budget between the open source dependencies of your projects.
+- [PayPal](https://paypal.me/cedricdelpoux).
+
+You can also visit [cedricdelpoux.fr](https://cedricdelpoux.fr/en).
 
 ## License
 
@@ -100,6 +110,9 @@ If this project is useful to you, you can give it a star, or [sponsor it with Pa
 [badge-build]: https://img.shields.io/github/actions/workflow/status/cedricdelpoux/google-docs-sync/ci.yml?branch=main&style=flat-square
 [badge-licence]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
 [badge-prs]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
+[badge-github]: https://img.shields.io/github/sponsors/cedricdelpoux?label=GitHub%20Sponsors&style=flat-square
+[badge-kofi]: https://img.shields.io/badge/Ko--fi-support-ff5e5b.svg?style=flat-square
+[badge-thanks]: https://img.shields.io/badge/thanks.dev-support-7b61ff.svg?style=flat-square
 [badge-paypal]: https://img.shields.io/badge/sponsor-PayPal-3b7bbf.svg?style=flat-square
 [actions]: https://github.com/cedricdelpoux/google-docs-sync/actions/workflows/ci.yml
 [github-issue]: https://github.com/cedricdelpoux/google-docs-sync/issues/new

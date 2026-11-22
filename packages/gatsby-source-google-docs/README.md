@@ -12,6 +12,9 @@
 [![Downloads][badge-downloads]][npm]
 [![PRs welcome][badge-prs]](#contributing)
 [![MIT license][badge-licence]](./LICENCE.md)
+[![GitHub Sponsors][badge-github]](https://github.com/sponsors/cedricdelpoux)
+[![Ko-fi][badge-kofi]](https://ko-fi.com/cedricdelpoux)
+[![thanks.dev][badge-thanks]](https://thanks.dev/u/gh/cedricdelpoux)
 [![Paypal][badge-paypal]](https://paypal.me/cedricdelpoux)
 
 </div>
@@ -404,6 +407,9 @@ The code is plain JavaScript. The types of the options are written as [JSDoc](ht
 
 To release a version, describe the change with `npm run changeset` and commit the generated file with your pull request. Once it is merged, the `Release` workflow opens a "Version packages" pull request, and merging it publishes the packages to npm with their provenance. See the [monorepo README](https://github.com/cedricdelpoux/google-docs-sync#releases).
 
+[badge-github]: https://img.shields.io/github/sponsors/cedricdelpoux?label=GitHub%20Sponsors&style=flat-square
+[badge-kofi]: https://img.shields.io/badge/Ko--fi-support-ff5e5b.svg?style=flat-square
+[badge-thanks]: https://img.shields.io/badge/thanks.dev-support-7b61ff.svg?style=flat-square
 [badge-paypal]: https://img.shields.io/badge/sponsor-PayPal-3b7bbf.svg?style=flat-square
 [badge-npm]: https://img.shields.io/npm/v/gatsby-source-google-docs.svg?style=flat-square
 [badge-downloads]: https://img.shields.io/npm/dt/gatsby-source-google-docs.svg?style=flat-square
