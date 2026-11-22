@@ -4,9 +4,9 @@
 [![Build Status][badge-build]][actions]
 [![MIT license][badge-licence]](./LICENCE.md)
 
-`google-docs-sync` syncs a [Google Drive](https://drive.google.com/) folder of [Google Docs](https://docs.google.com/) to a local directory of Markdown or MDX files, with their images. It is the framework-agnostic core of [gatsby-source-google-docs](https://github.com/cedricdelpoux/google-docs-sync/tree/master/packages/gatsby-source-google-docs), and it works with any static site generator or script: use it from a build script, a content loader or the command line.
+`google-docs-sync` syncs a [Google Drive](https://drive.google.com/) folder of [Google Docs](https://docs.google.com/) to a local directory of Markdown or MDX files, with their images. It is the framework-agnostic core of [gatsby-source-google-docs](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/gatsby-source-google-docs), and it works with any static site generator or script: use it from a build script, a content loader or the command line.
 
-The Markdown conversion is done by [google-docs-to-markdown](https://github.com/cedricdelpoux/google-docs-sync/tree/master/packages/google-docs-to-markdown).
+The Markdown conversion is done by [google-docs-to-markdown](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/google-docs-to-markdown).
 
 ## Features
 
@@ -126,7 +126,7 @@ The variables of the [token generation](#token-generation) are read from the env
 - `imagesOptions` is the size the images are downloaded at, between 1 and 16383 (`width`, `height`, `crop`). Changing it downloads them again.
 - `logger` receives the messages of the sync: `warn` for what is skipped (a description that is not valid YAML, an image that could not be downloaded), `info` for the progress in `debug` mode.
 
-The conversion options of [google-docs-to-markdown](https://github.com/cedricdelpoux/google-docs-sync/tree/master/packages/google-docs-to-markdown#options) are accepted too: `escapeMdxSyntax`, `demoteHeadings` (`true` by default here), `keepDefaultStyle` and the `skip*` ones. `mdx` follows `extension`, and `frontmatter` and `links` are filled by the sync.
+The conversion options of [google-docs-to-markdown](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/google-docs-to-markdown#options) are accepted too: `escapeMdxSyntax`, `demoteHeadings` (`true` by default here), `keepDefaultStyle` and the `skip*` ones. `mdx` follows `extension`, and `frontmatter` and `links` are filled by the sync.
 
 ## Output
 
@@ -302,7 +302,7 @@ npm run fixture -- <document id>
 To release a version, describe the change with `npm run changeset` and commit the generated file with your pull request. See the [monorepo README](https://github.com/cedricdelpoux/google-docs-sync#releases).
 
 [badge-npm]: https://img.shields.io/npm/v/google-docs-sync.svg?style=flat-square
-[badge-build]: https://img.shields.io/github/actions/workflow/status/cedricdelpoux/google-docs-sync/ci.yml?branch=master&style=flat-square
+[badge-build]: https://img.shields.io/github/actions/workflow/status/cedricdelpoux/google-docs-sync/ci.yml?branch=main&style=flat-square
 [badge-licence]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
 [npm]: https://www.npmjs.org/package/google-docs-sync
 [actions]: https://github.com/cedricdelpoux/google-docs-sync/actions/workflows/ci.yml

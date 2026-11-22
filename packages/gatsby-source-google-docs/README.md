@@ -69,7 +69,7 @@ Download `gatsby-source-google-docs` and `gatsby-transformer-remark` (or `gatsby
 npm install gatsby-source-google-docs gatsby-transformer-remark
 ```
 
-- `gatsby-source-google-docs` transform **Google Docs** to **Markdown**, with [google-docs-sync](https://github.com/cedricdelpoux/google-docs-sync/tree/master/packages/google-docs-sync), which you can also use without Gatsby
+- `gatsby-source-google-docs` transform **Google Docs** to **Markdown**, with [google-docs-sync](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/google-docs-sync), which you can also use without Gatsby
 - `gatsby-transformer-remark` transform **Markdown** to **HTML**
 - `gatsby-plugin-mdx` transform **Markdown** to **MDX**
 
@@ -230,7 +230,7 @@ are created for all of them, so `gatsby-transformer-remark` and
 
 This is why `MDX` works again. Since v4, `gatsby-plugin-mdx` compiles MDX
 through webpack from a file path and
-[only supports files sourced from the filesystem](https://github.com/gatsbyjs/gatsby/blob/master/packages/gatsby-plugin-mdx/README.md),
+[only supports files sourced from the filesystem](https://github.com/gatsbyjs/gatsby/blob/main/packages/gatsby-plugin-mdx/README.md),
 so documents kept in memory could never become MDX. Set `extension: "mdx"` to
 author your documents as MDX.
 
@@ -407,8 +407,8 @@ To release a version, describe the change with `npm run changeset` and commit th
 [badge-paypal]: https://img.shields.io/badge/sponsor-PayPal-3b7bbf.svg?style=flat-square
 [badge-npm]: https://img.shields.io/npm/v/gatsby-source-google-docs.svg?style=flat-square
 [badge-downloads]: https://img.shields.io/npm/dt/gatsby-source-google-docs.svg?style=flat-square
-[badge-build]: https://img.shields.io/github/actions/workflow/status/cedricdelpoux/google-docs-sync/ci.yml?branch=master&style=flat-square
-[badge-coverage]: https://img.shields.io/codecov/c/github/cedricdelpoux/google-docs-sync/master.svg?style=flat-square
+[badge-build]: https://img.shields.io/github/actions/workflow/status/cedricdelpoux/google-docs-sync/ci.yml?branch=main&style=flat-square
+[badge-coverage]: https://img.shields.io/codecov/c/github/cedricdelpoux/google-docs-sync/main.svg?style=flat-square
 [badge-licence]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
 [badge-prs]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
 [npm]: https://www.npmjs.org/package/gatsby-source-google-docs
