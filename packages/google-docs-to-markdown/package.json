@@ -43,8 +43,5 @@
     "test": "vitest run --coverage",
     "prepack": "npm run build",
     "prepublishOnly": "npm run lint && npm test"
-  },
-  "allowScripts": {
-    "fsevents": false
   }
 }
