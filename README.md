@@ -20,6 +20,8 @@ Use Google Docs as a content source. This monorepo holds the packages that read 
 | Package                                                             | Version                      | Description                                                              |
 | ------------------------------------------------------------------- | ---------------------------- | ------------------------------------------------------------------------ |
 | [`gatsby-source-google-docs`](./packages/gatsby-source-google-docs) | [![npm][v-gatsby]][n-gatsby] | Gatsby plugin that uses Google Docs as a data source                     |
+| [`astro-loader-google-docs`](./packages/astro-loader-google-docs)   | [![npm][v-astro]][n-astro]   | Astro content loader that uses Google Docs as a collection               |
+| [`next-google-docs`](./packages/next-google-docs)                   | [![npm][v-next]][n-next]     | Next.js adapter that syncs Google Docs at build time                     |
 | [`google-docs-sync`](./packages/google-docs-sync)                   | [![npm][v-sync]][n-sync]     | Sync a Google Drive folder of Google Docs to local Markdown or MDX files |
 | [`google-docs-to-markdown`](./packages/google-docs-to-markdown)     | [![npm][v-md]][n-md]         | Convert a Google Docs API document to Markdown or MDX                    |
 | [`google-oauth2-env-vars`](./packages/google-oauth2-env-vars)       | [![npm][v-oauth]][n-oauth]   | Generate and cache Google OAuth 2.0 tokens in `.env` files               |
@@ -27,6 +29,8 @@ Use Google Docs as a content source. This monorepo holds the packages that read 
 ## Which package do I need?
 
 - **A Gatsby site**: [`gatsby-source-google-docs`](./packages/gatsby-source-google-docs).
+- **An Astro site**: [`astro-loader-google-docs`](./packages/astro-loader-google-docs).
+- **A Next.js site**: [`next-google-docs`](./packages/next-google-docs).
 - **Another framework, a build script or the command line**: [`google-docs-sync`](./packages/google-docs-sync).
 
   ```shell
@@ -47,10 +51,10 @@ Use Google Docs as a content source. This monorepo holds the packages that read 
 
 ## How it works
 
-`gatsby-source-google-docs` is a thin adapter over `google-docs-sync`, which owns the Google APIs and the filesystem. Each package has its own README and CHANGELOG.
+The framework packages are thin adapters over `google-docs-sync`, which owns the Google APIs and the filesystem. Each package has its own README and CHANGELOG.
 
 ```text
-gatsby-source-google-docs
+gatsby-source-google-docs, astro-loader-google-docs, next-google-docs
   └─ google-docs-sync
        ├─ google-docs-to-markdown
        └─ google-oauth2-env-vars
@@ -101,6 +105,10 @@ If this project is useful to you, you can give it a star, or [sponsor it with Pa
 [github-issue]: https://github.com/cedricdelpoux/google-docs-sync/issues/new
 [v-gatsby]: https://img.shields.io/npm/v/gatsby-source-google-docs.svg?style=flat-square
 [n-gatsby]: https://www.npmjs.com/package/gatsby-source-google-docs
+[v-astro]: https://img.shields.io/npm/v/astro-loader-google-docs.svg?style=flat-square
+[n-astro]: https://www.npmjs.com/package/astro-loader-google-docs
+[v-next]: https://img.shields.io/npm/v/next-google-docs.svg?style=flat-square
+[n-next]: https://www.npmjs.com/package/next-google-docs
 [v-sync]: https://img.shields.io/npm/v/google-docs-sync.svg?style=flat-square
 [n-sync]: https://www.npmjs.com/package/google-docs-sync
 [v-md]: https://img.shields.io/npm/v/google-docs-to-markdown.svg?style=flat-square

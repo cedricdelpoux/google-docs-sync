@@ -5,13 +5,16 @@ npm workspaces monorepo. Everything is ESM or plain JavaScript checked with tsc 
 ## Layout
 
 - `packages/gatsby-source-google-docs`: the Gatsby plugin, a thin adapter over `google-docs-sync` (source nodes, pages, schema, Gatsby options). Its `examples/` are Gatsby sites with their own tooling, they are not workspaces.
+- `packages/astro-loader-google-docs`: the Astro content loader over `google-docs-sync` (Markdown only, images optimised by Astro). Its `examples/basic` site runs on port 8105 and installs the loader as a copy (`install-links=true`), because Astro fails on a symlinked one.
+- `packages/next-google-docs`: the Next.js adapter over `google-docs-sync`. `withGoogleDocs()` syncs once when `next dev` or `next build` starts and copies the images to `public/`, `next-google-docs/documents` reads the synced files. Its `examples/basic` site runs on port 8106.
+- The examples are not workspaces, their lockfiles are git-ignored, and they read the Google credentials from their own git-ignored `.env`.
 - `packages/google-docs-sync`: the framework-agnostic sync (depends on `google-docs-to-markdown` and `google-oauth2-env-vars`). It owns everything that touches the Google APIs and the filesystem: auth and token, Drive folder walk, document fetching, the `.google-docs` store, writing the Markdown and images. Frameworks inject a logger (`{info, warn, error}`) and read the returned documents. Its CLI bins are `google-docs-sync` and `google-docs-sync-token`.
 - `packages/google-docs-to-markdown`: the pure converter, Google Docs API document JSON in, Markdown or MDX out. It knows nothing about Google APIs or the filesystem.
 - `packages/google-oauth2-env-vars`: token generation, CommonJS.
 - Shared at the root: `eslint.config.js` (one flat config with per-package overrides), `.prettierrc`, `.prettierignore`, `.editorconfig`, `.npmrc`, `.github/`, `.changeset/`, and the single `package-lock.json`.
 - The dev dependencies shared by the packages (eslint, prettier, typescript, vitest, coverage, `@types/node`, globals) live in the root `package.json`. A package declares only its own.
 - Each package keeps its own `LICENCE.md` copy because npm packs it from the package folder.
-- The repository is `cedricdelpoux/google-docs-sync` on GitHub (formerly `google-docs-to-markdown`), the `repository.url` of every package points to it.
+- The repository is `cedricdelpoux/google-docs-sync` on GitHub (formerly `gatsby-source-google-docs`), the `repository.url` of every package points to it.
 - Internal dependency ranges (`google-docs-to-markdown: ^1.0.1`) stay as they are: npm links the workspace packages while the versions satisfy the ranges.
 
 ## Commands
