@@ -184,3 +184,24 @@ test("does nothing when no transformer is installed", async () => {
 
   expect(api.graphql).not.toHaveBeenCalled()
 })
+
+test("uses a template named with its extension as it is", async () => {
+  await writeFile("src/templates/article.tsx", "")
+  const api = createApi({nodes: [createNode({template: "article.tsx"})]})
+
+  await createPages(api, {createPages: true})
+
+  expect(api.actions.createPage.mock.calls[0][0].component).toBe(
+    join(directory, "src/templates/article.tsx")
+  )
+})
+
+test("forwards no extra field when `pageContext` is null", async () => {
+  const api = createApi({nodes: [createNode({})]})
+
+  await createPages(api, {createPages: true, pageContext: null})
+
+  expect(api.actions.createPage.mock.calls[0][0].context).toEqual({
+    slug: "/home",
+  })
+})

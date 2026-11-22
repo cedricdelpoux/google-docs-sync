@@ -194,3 +194,14 @@ test("reports the messages of the sync through the Gatsby reporter", async () =>
   expect(api.reporter.warn).toHaveBeenCalledWith("source-google-docs: two")
   expect(api.reporter.error).toHaveBeenCalledWith("source-google-docs: three")
 })
+
+test("keeps the cache in the working directory without the Gatsby store", async () => {
+  const api = createApi()
+  delete api.store
+
+  await sourceNodes(api, {folder: "folder-id", outputDir})
+
+  expect(syncGoogleDocs.mock.calls[0][0].cacheDir).toBe(
+    join(process.cwd(), ".google-docs")
+  )
+})
