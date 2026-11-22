@@ -1,5 +1,14 @@
 # google-docs-sync
 
+## 0.1.2
+
+### Patch Changes
+
+- 00c016e: List the GitHub Sponsors, Ko-fi, thanks.dev and PayPal links in `npm fund`, and point the README links to the `main` branch.
+- Updated dependencies [00c016e]
+  - google-docs-to-markdown@2.0.2
+  - google-oauth2-env-vars@2.0.2
+
 ## 0.1.1
 
 ### Patch Changes
