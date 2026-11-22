@@ -138,3 +138,56 @@ test("fails the build when the sync fails", async () => {
     "Missing folder"
   )
 })
+
+test("logs with the google-docs prefix when no logger is given", async () => {
+  const log = vi.spyOn(console, "log").mockImplementation(() => {})
+  const warn = vi.spyOn(console, "warn").mockImplementation(() => {})
+  const error = vi.spyOn(console, "error").mockImplementation(() => {})
+  vi.mocked(syncGoogleDocs).mockImplementation(async ({logger}) => {
+    logger.warn("careful")
+    logger.error("broken")
+    return {files: [], fetchedCount: 2, imagesCount: 0}
+  })
+  const options = createOptions()
+  delete options.logger
+
+  await withGoogleDocs({}, options)(BUILD, {})
+
+  expect(warn).toHaveBeenCalledWith("google-docs: careful")
+  expect(error).toHaveBeenCalledWith("google-docs: broken")
+  expect(log).toHaveBeenCalledWith(
+    "google-docs: 2 documents fetched, 0 images in public/docs"
+  )
+  vi.restoreAllMocks()
+})
+
+test("stores the paths for the code that reads the documents", async () => {
+  const {resolvePaths} = await import("../lib/options.js")
+  const options = createOptions()
+
+  expect(resolvePaths()).toEqual({
+    outputDir: "content/google-docs",
+    publicDir: "public/google-docs",
+  })
+
+  await withGoogleDocs({}, options)("phase-production-server", {})
+
+  expect(resolvePaths()).toEqual({
+    outputDir: options.outputDir,
+    publicDir: "public/docs",
+  })
+  expect(resolvePaths({outputDir: "other"})).toEqual({
+    outputDir: "other",
+    publicDir: "public/docs",
+  })
+})
+
+test("turns the public directory into a url path", async () => {
+  const {getPublicPath} = await import("../lib/options.js")
+
+  expect(getPublicPath("public")).toBe("")
+  expect(getPublicPath("public/docs")).toBe("/docs")
+  expect(() => getPublicPath("static")).toThrow(
+    '"publicDir" must be inside "public", got "static"'
+  )
+})
