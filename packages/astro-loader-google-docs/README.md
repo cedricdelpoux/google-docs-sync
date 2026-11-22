@@ -14,7 +14,7 @@
 
 ---
 
-`astro-loader-google-docs` is an [Astro](https://astro.build/) [content loader](https://docs.astro.build/en/reference/content-loader-reference/) that uses [Google Docs](https://docs.google.com/) as a data source. It syncs a Google Drive folder with [google-docs-sync](https://github.com/cedricdelpoux/google-docs-sync/tree/master/packages/google-docs-sync) and stores one entry per document in a content collection.
+`astro-loader-google-docs` is an [Astro](https://astro.build/) [content loader](https://docs.astro.build/en/reference/content-loader-reference/) that uses [Google Docs](https://docs.google.com/) as a data source. It syncs a Google Drive folder with [google-docs-sync](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/google-docs-sync) and stores one entry per document in a content collection.
 
 ## Features
 
@@ -109,5 +109,5 @@ Issues and pull requests are welcome in the [repository](https://github.com/cedr
 [npm]: https://www.npmjs.com/package/astro-loader-google-docs
 [actions]: https://github.com/cedricdelpoux/google-docs-sync/actions/workflows/ci.yml
 [badge-npm]: https://img.shields.io/npm/v/astro-loader-google-docs.svg?style=flat-square
-[badge-build]: https://img.shields.io/github/actions/workflow/status/cedricdelpoux/google-docs-sync/ci.yml?branch=master&style=flat-square
+[badge-build]: https://img.shields.io/github/actions/workflow/status/cedricdelpoux/google-docs-sync/ci.yml?branch=main&style=flat-square
 [badge-licence]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square

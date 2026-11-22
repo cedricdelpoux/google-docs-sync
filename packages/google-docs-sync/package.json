@@ -7,7 +7,7 @@
     "url": "git+https://github.com/cedricdelpoux/google-docs-sync.git",
     "directory": "packages/google-docs-sync"
   },
-  "homepage": "https://github.com/cedricdelpoux/google-docs-sync/tree/master/packages/google-docs-sync#readme",
+  "homepage": "https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/google-docs-sync#readme",
   "bugs": {
     "url": "https://github.com/cedricdelpoux/google-docs-sync/issues"
   },

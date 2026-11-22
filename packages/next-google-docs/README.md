@@ -16,7 +16,7 @@
 
 `next-google-docs` is a [Next.js](https://nextjs.org/) integration to use [Google Docs](https://docs.google.com/) as a data source. It syncs a [Google Drive](https://drive.google.com/) folder to Markdown files and images when `next dev` or `next build` starts, and gives your App Router pages two functions to read them.
 
-It is an adapter over [google-docs-sync](https://github.com/cedricdelpoux/google-docs-sync/tree/master/packages/google-docs-sync), which does the sync, and [google-docs-to-markdown](https://github.com/cedricdelpoux/google-docs-sync/tree/master/packages/google-docs-to-markdown), which does the conversion. How the Markdown is rendered is up to you.
+It is an adapter over [google-docs-sync](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/google-docs-sync), which does the sync, and [google-docs-to-markdown](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/google-docs-to-markdown), which does the conversion. How the Markdown is rendered is up to you.
 
 ## Installation
 
@@ -34,7 +34,7 @@ The sync needs 3 variables, in a `.env` file that Next.js loads. Run the followi
 npx google-docs-sync-token
 ```
 
-Add `.env` to your `.gitignore`: it holds secrets. Read the [google-docs-sync documentation](https://github.com/cedricdelpoux/google-docs-sync/tree/master/packages/google-docs-sync#token-generation) for the details.
+Add `.env` to your `.gitignore`: it holds secrets. Read the [google-docs-sync documentation](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/google-docs-sync#token-generation) for the details.
 
 ## Usage
 
@@ -108,7 +108,7 @@ Set `extension: "mdx"` to author the documents as MDX.
 
 ### `withGoogleDocs(nextConfig, options)`
 
-Returns a Next.js config function. The options are the [google-docs-sync options](https://github.com/cedricdelpoux/google-docs-sync/tree/master/packages/google-docs-sync#options) (`folder`, `outputDir`, `cacheDir`, `extension`, `imagesOptions`, `auth`, `logger`, the converter options), plus:
+Returns a Next.js config function. The options are the [google-docs-sync options](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/google-docs-sync#options) (`folder`, `outputDir`, `cacheDir`, `extension`, `imagesOptions`, `auth`, `logger`, the converter options), plus:
 
 | Option    | Required | Type   | Default               | Example          |
 | --------- | -------- | ------ | --------------------- | ---------------- |

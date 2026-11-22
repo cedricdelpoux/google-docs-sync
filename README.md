@@ -86,7 +86,7 @@ Use `-w <package>` to run a script in one package, for example `npm test -w goog
 The packages are versioned independently with [changesets](https://github.com/changesets/changesets).
 
 1. Run `npm run changeset` to choose the packages and the bump (patch, minor or major) and to describe the change. Commit the generated file with your pull request.
-2. When the pull request is merged into `master`, the `Release` workflow opens a "Version packages" pull request. It bumps the versions, updates the changelogs and the dependency ranges between the packages.
+2. When the pull request is merged into `main`, the `Release` workflow opens a "Version packages" pull request. It bumps the versions, updates the changelogs and the dependency ranges between the packages.
 3. Merging the "Version packages" pull request publishes the new versions to npm with their provenance and creates the git tags.
 
 ## Support
@@ -97,7 +97,7 @@ If this project is useful to you, you can give it a star, or [sponsor it with Pa
 
 [MIT](./LICENCE.md)
 
-[badge-build]: https://img.shields.io/github/actions/workflow/status/cedricdelpoux/google-docs-sync/ci.yml?branch=master&style=flat-square
+[badge-build]: https://img.shields.io/github/actions/workflow/status/cedricdelpoux/google-docs-sync/ci.yml?branch=main&style=flat-square
 [badge-licence]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
 [badge-prs]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
 [badge-paypal]: https://img.shields.io/badge/sponsor-PayPal-3b7bbf.svg?style=flat-square

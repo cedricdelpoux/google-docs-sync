@@ -30,9 +30,9 @@ Run from the root.
 
 ## Releases
 
-Independent versions with changesets (`.changeset/config.json`, base branch `master`).
+Independent versions with changesets (`.changeset/config.json`, base branch `main`).
 
 - A change to a package comes with a changeset: `npm run changeset`.
-- `.github/workflows/release.yml` runs `changesets/action` on `master`: it opens the "Version packages" pull request (`npm run version-packages`, which also refreshes the lock), and when that is merged it publishes (`npm run release`, i.e. `changeset publish`) through npm trusted publishing (OIDC, no token).
+- `.github/workflows/release.yml` runs `changesets/action` on `main`: it opens the "Version packages" pull request (`npm run version-packages`, which also refreshes the lock), and when that is merged it publishes (`npm run release`, i.e. `changeset publish`) through npm trusted publishing (OIDC, no token).
 - Tags are `<package>@<version>`. The ones imported before the merge are `google-docs-to-markdown@v1.0.1` and `google-oauth2-env-vars@v2.0.0`, the gatsby plugin keeps its old `vX.Y.Z` tags.
 - `.github/workflows/ci.yml` runs lint and tests on Node 22 and 24 (Gatsby 5 does not support Node 26).

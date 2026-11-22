@@ -6,7 +6,7 @@
 
 `google-docs-to-markdown` converts [Google Docs](https://docs.google.com/) to Markdown or MDX.
 
-It reads the document returned by the [Google Docs API](https://developers.google.com/workspace/docs/api/reference/rest/v1/documents) and gives back a Markdown string with a frontmatter. It does not call Google: [google-docs-sync](https://github.com/cedricdelpoux/google-docs-sync/tree/master/packages/google-docs-sync) fetches the documents and writes the files, and it powers [gatsby-source-google-docs](https://github.com/cedricdelpoux/google-docs-sync/tree/master/packages/gatsby-source-google-docs). The converter works with any static site generator or script.
+It reads the document returned by the [Google Docs API](https://developers.google.com/workspace/docs/api/reference/rest/v1/documents) and gives back a Markdown string with a frontmatter. It does not call Google: [google-docs-sync](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/google-docs-sync) fetches the documents and writes the files, and it powers [gatsby-source-google-docs](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/gatsby-source-google-docs). The converter works with any static site generator or script.
 
 Google Drive can export a document as Markdown itself, but that export turns code blocks into one-cell tables without line breaks, escapes MDX components, embeds every image as base64 and drops the colors, underlines and inline code. This library keeps all of them.
 
@@ -44,7 +44,7 @@ const markdown = toMarkdown(document, {
 
 ### From a document id
 
-This package does not fetch anything. [`google-docs-sync`](https://github.com/cedricdelpoux/google-docs-sync/tree/master/packages/google-docs-sync) fetches the document, authenticates with Google and generates the token (`npx google-docs-sync-token`):
+This package does not fetch anything. [`google-docs-sync`](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/google-docs-sync) fetches the document, authenticates with Google and generates the token (`npx google-docs-sync-token`):
 
 ```js
 import {fetchDocument} from "google-docs-sync"
@@ -130,7 +130,7 @@ The code is plain JavaScript. The types of the public API are written as [JSDoc]
 To release a version, describe the change with `npm run changeset` and commit the generated file with your pull request. Once it is merged, the `Release` workflow opens a "Version packages" pull request, and merging it publishes the packages to npm with their provenance. See the [monorepo README](https://github.com/cedricdelpoux/google-docs-sync#releases).
 
 [badge-npm]: https://img.shields.io/npm/v/google-docs-to-markdown.svg?style=flat-square
-[badge-build]: https://img.shields.io/github/actions/workflow/status/cedricdelpoux/google-docs-sync/ci.yml?branch=master&style=flat-square
+[badge-build]: https://img.shields.io/github/actions/workflow/status/cedricdelpoux/google-docs-sync/ci.yml?branch=main&style=flat-square
 [badge-licence]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
 [npm]: https://www.npmjs.org/package/google-docs-to-markdown
 [actions]: https://github.com/cedricdelpoux/google-docs-sync/actions/workflows/ci.yml
