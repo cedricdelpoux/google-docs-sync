@@ -458,3 +458,16 @@ test("follows more than two pages of a long listing", async () => {
     "/third",
   ])
 })
+
+test("lists every document of the drive when no folder is given", async () => {
+  mockGet.mockResolvedValue({data: {}})
+  mockList.mockResolvedValue({
+    data: {files: [document({name: "Home", parents: [null]})]},
+  })
+
+  await fetchFiles({folder: null}, {logger})
+
+  expect(mockList.mock.calls[0][0].q).toBe(
+    "(mimeType='application/vnd.google-apps.folder' or mimeType='application/vnd.google-apps.document') and trashed = false"
+  )
+})
