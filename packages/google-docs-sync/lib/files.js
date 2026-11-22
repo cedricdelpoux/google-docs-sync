@@ -1,20 +1,21 @@
 import {readdir, rm} from "node:fs/promises"
 import {join, resolve} from "node:path"
 
-/** Every file under `outputDir` that this run did not write is stale. */
+/** Like `readdir`, with no entries for a missing directory. */
+export async function readEntries(directory) {
+  try {
+    return await readdir(directory, {withFileTypes: true})
+  } catch (e) {
+    if (e.code === "ENOENT") return []
+    throw e
+  }
+}
+
 export async function removeStaleFiles({outputDir, writtenFiles}) {
   const kept = new Set(writtenFiles.map((file) => resolve(file)))
 
   const walk = async (directory) => {
-    let entries
-
-    try {
-      entries = await readdir(directory, {withFileTypes: true})
-    } catch (e) {
-      if (e.code === "ENOENT") return true
-      throw e
-    }
-
+    const entries = await readEntries(directory)
     let empty = true
 
     for (const entry of entries) {
@@ -41,16 +42,8 @@ export async function removeStaleFiles({outputDir, writtenFiles}) {
   await walk(outputDir)
 }
 
-/** List every file currently living under `directory`. */
 export async function listFiles(directory) {
-  let entries
-
-  try {
-    entries = await readdir(directory, {withFileTypes: true})
-  } catch (e) {
-    if (e.code === "ENOENT") return []
-    throw e
-  }
+  const entries = await readEntries(directory)
 
   const files = await Promise.all(
     entries.map(async (entry) => {

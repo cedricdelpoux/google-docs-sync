@@ -40,8 +40,6 @@ describe("getImagesDirectory", () => {
   })
 
   test("keeps nested slugs apart from flattened ones", () => {
-    // Kebab-casing would map both onto "foo-bar" and let one document
-    // overwrite the other's images
     expect(getImagesDirectory("/foo/bar")).not.toBe(
       getImagesDirectory("/foo-bar")
     )
@@ -60,7 +58,7 @@ describe("writeDocuments", () => {
     writeDocuments({
       documents: [
         {
-          fromStore: true,
+          isStored: true,
           googleDocument: new GoogleDocument(document, {
             frontmatter: {id: "1", name: "Home", slug: "/", comments},
           }),

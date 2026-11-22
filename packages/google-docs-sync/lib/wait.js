@@ -5,12 +5,12 @@ function reload(requestsPerInterval, interval, state) {
   const now = Date.now()
   const reloadTime = now - state.lastReload
   const reloadedRequests = reloadTime * throughput
-  const newAvalableRequests = state.availableRequests + reloadedRequests
+  const newAvailableRequests = state.availableRequests + reloadedRequests
 
   return {
     ...state,
     lastReload: now,
-    availableRequests: Math.min(newAvalableRequests, requestsPerInterval),
+    availableRequests: Math.min(newAvailableRequests, requestsPerInterval),
   }
 }
 
@@ -32,11 +32,11 @@ function wait(requestsPerInterval, interval) {
     state = reload(requestsPerInterval, interval, state)
 
     const requestsToWait = Math.max(0, requests - state.availableRequests)
-    const wait = Math.ceil(requestsToWait * timePerRequest)
+    const waitTime = Math.ceil(requestsToWait * timePerRequest)
 
     state.availableRequests -= requests
-    await sleep(wait)
-    return wait
+    await sleep(waitTime)
+    return waitTime
   }
 
   return waitRequest

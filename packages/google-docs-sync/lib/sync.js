@@ -17,8 +17,7 @@ import {writeDocuments} from "./write-documents.js"
  */
 
 /**
- * Sync a Google Drive folder to `outputDir`: one Markdown file per document,
- * and the images they reference next to them.
+ * Sync a Google Drive folder to `outputDir`.
  *
  * @param {import("./options.js").Options} options
  */
@@ -33,7 +32,6 @@ export async function syncGoogleDocs({auth, logger = console, ...userOptions}) {
 
   await store.init({imagesParams: getImageUrlParameters(options)})
 
-  // One client for the whole sync, so the access token is refreshed once
   const client = auth || (await getAuth())
   const {documents: googleDocuments, fetchedCount} = await fetchDocuments({
     options,
@@ -51,9 +49,7 @@ export async function syncGoogleDocs({auth, logger = console, ...userOptions}) {
       refetchDocument: (id) => fetchDocument(id, {auth: client}),
     })
 
-  // An empty listing is far more often a folder that could not be read than a
-  // folder that was emptied, and pruning on one would throw away everything
-  // the store holds
+  // An empty listing is more likely an unreadable folder than an emptied one
   if (googleDocuments.length > 0) {
     await store.prune(
       googleDocuments.map(({googleDocument}) => googleDocument.frontmatter.id)

@@ -5,9 +5,7 @@ import {Readable} from "node:stream"
 import {pipeline} from "node:stream/promises"
 import {setTimeout as delay} from "node:timers/promises"
 
-// Google serves document images without a file extension, so the extension has
-// to come from the response. Image tools dispatch on the extension, not on the
-// content of the file, so it has to be right.
+// Google serves images without an extension, and image tools dispatch on it
 const EXTENSIONS_BY_MIME_TYPE = {
   "image/png": "png",
   "image/jpeg": "jpg",
@@ -23,12 +21,7 @@ const EXTENSIONS_BY_MIME_TYPE = {
 const RETRIES = 3
 const RETRY_DELAY = 1000
 
-/**
- * Download `url` into `directory` and return the written file name.
- *
- * The response is streamed straight to disk so a large image never has to be
- * held in memory in full.
- */
+/** Stream `url` to `directory` and return the written file name. */
 async function downloadImage({url, directory, name}) {
   let lastError
 
@@ -64,8 +57,7 @@ async function downloadImage({url, directory, name}) {
           createWriteStream(filePath)
         )
       } catch (e) {
-        // A half-written file would be picked up as an image and fail much
-        // later with a far less obvious message.
+        // A half-written file would be reused as an image
         await rm(filePath, {force: true})
         throw e
       }
@@ -74,7 +66,7 @@ async function downloadImage({url, directory, name}) {
     } catch (e) {
       lastError = e
 
-      // Asking again gives the same answer, except when it is rate limited
+      // Only a rate limit is worth asking again
       const isClientError =
         e.status >= 400 && e.status < 500 && e.status !== 429
 

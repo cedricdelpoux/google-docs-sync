@@ -58,7 +58,7 @@ test("fetches a document the store does not hold", async () => {
 
   expect(fetchDocument).toHaveBeenCalledTimes(1)
   expect(fetchedCount).toBe(1)
-  expect(documents[0].fromStore).toBe(false)
+  expect(documents[0].isStored).toBe(false)
   expect(store.documents["1Tn1dCbIc"].modifiedTime).toBe(
     properties.modifiedTime
   )
@@ -77,7 +77,7 @@ test("does not fetch a document that has not been modified since", async () => {
 
   expect(fetchDocument).not.toHaveBeenCalled()
   expect(fetchedCount).toBe(0)
-  expect(documents[0].fromStore).toBe(true)
+  expect(documents[0].isStored).toBe(true)
   expect(documents[0].googleDocument.document).toBe(document)
 })
 
@@ -96,8 +96,6 @@ test("fetches a document again once it has been modified", async () => {
 })
 
 test("reads the metadata of a stored document from Google Drive", async () => {
-  // The listing is free, so a document renamed or moved on Drive follows,
-  // whether it had to be fetched again or not
   const store = createFakeStore({
     "1Tn1dCbIc": {modifiedTime: properties.modifiedTime, document},
   })

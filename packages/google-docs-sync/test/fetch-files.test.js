@@ -121,8 +121,6 @@ test("reads metadata from a YAML document description", async () => {
 
   expect(file.slug).toBe("/welcome")
   expect(file.template).toBe("hero")
-  // The path stays the one of the document on Drive: it is where the file is
-  // written, not where the page is served
   expect(file.path).toBe("/home")
 })
 
@@ -213,7 +211,6 @@ test("warns about a root folder description that is not valid YAML", async () =>
 })
 
 test("keeps a `skip` folder out of the slug but not out of the path", async () => {
-  // Organising documents on Drive should not force that hierarchy on the URLs
   drive({
     [ROOT]: [folder({id: "f1", name: "Drafts", description: "skip: true"})],
     f1: [document({name: "My Post", parents: ["f1"]})],
@@ -224,7 +221,6 @@ test("keeps a `skip` folder out of the slug but not out of the path", async () =
   expect(file.slug).toBe("/my-post")
   expect(file.path).toBe("/drafts/my-post")
   expect(file.breadcrumb).toEqual([{name: "My Post", slug: "/my-post"}])
-  // `skip` describes the folder, and must not leak into its documents
   expect(file.skip).toBeUndefined()
 })
 

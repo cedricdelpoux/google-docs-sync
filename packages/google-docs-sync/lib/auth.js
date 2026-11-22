@@ -9,12 +9,9 @@ const TOKEN_VAR = "GOOGLE_DOCS_TOKEN"
  */
 export const getAuth = () => new GoogleOAuth2({token: TOKEN_VAR}).getAuth()
 
-/**
- * Generate GOOGLE_DOCS_TOKEN, as `npx google-docs-to-markdown-token` does.
- */
+/** Generate GOOGLE_DOCS_TOKEN. */
 export const generateToken = async () => {
   await new GoogleOAuth2({
-    // Drive lets the same token list the documents of a folder
     scope: [
       "https://www.googleapis.com/auth/documents.readonly",
       "https://www.googleapis.com/auth/drive.readonly",

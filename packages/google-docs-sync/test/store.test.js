@@ -56,7 +56,6 @@ describe("documents", () => {
     await store.init({})
     await store.writeDocument({id: "../../escaped", document: {}})
 
-    // Whatever the id holds, it names a file inside the store and nowhere else
     expect(await readdir(join(dir, "documents"))).toEqual(["-..-escaped.json"])
   })
 })
@@ -96,8 +95,6 @@ describe("init", () => {
 
     await createStore({dir}).init({imagesParams: "=w512"})
 
-    // The size is part of the URL: the files on disk are not the ones the
-    // site asks for anymore, but the documents holding them are untouched
     expect(await store.readImages("1Tn1dCbIc")).toEqual(new Map())
     expect(await store.readDocument("1Tn1dCbIc")).not.toBeNull()
   })

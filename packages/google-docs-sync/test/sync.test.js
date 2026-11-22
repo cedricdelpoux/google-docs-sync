@@ -114,8 +114,6 @@ test("returns no file when the output directory does not exist", async () => {
 })
 
 test("keeps the store when Google Drive lists nothing", async () => {
-  // An empty listing is far more often a folder that could not be read than a
-  // folder that was emptied, and pruning on one throws everything away
   fetchDocuments.mockResolvedValue({documents: [], fetchedCount: 0})
 
   await sync()

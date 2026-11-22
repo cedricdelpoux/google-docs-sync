@@ -4,17 +4,11 @@ import {fetchDocument} from "./fetch-document.js"
 import {fetchComments, fetchFiles} from "./google-drive.js"
 
 /**
- * Fetch every document of the folder, reusing the ones the store already holds.
+ * Fetch the documents of the folder, except the ones the store holds with the
+ * same `modifiedTime`. The metadata always comes from the listing.
  *
- * Google Drive gives a `modifiedTime` for every document while listing the
- * folder, which costs nothing on top of the listing that is done anyway:
- * a document whose `modifiedTime` has not moved since it was stored is the
- * document that was stored, so it never has to be fetched again. Its metadata
- * still comes from the listing, so renaming a document or editing its
- * description is picked up whether it was fetched or not.
- *
- * The comments are fetched on every sync, never stored: Drive does not
- * reliably move `modifiedTime` when a comment is added or resolved.
+ * The comments are never stored: Drive does not reliably move `modifiedTime`
+ * when one is added or resolved.
  */
 async function fetchDocuments({options, logger, store, auth}) {
   if (options.debug) {
@@ -32,7 +26,7 @@ async function fetchDocuments({options, logger, store, auth}) {
   const documents = await Promise.all(
     documentsProperties.map(async (properties) => {
       const stored = await store.readDocument(properties.id)
-      const fromStore = Boolean(
+      const isStored = Boolean(
         stored &&
         stored.document &&
         properties.modifiedTime &&
@@ -40,7 +34,7 @@ async function fetchDocuments({options, logger, store, auth}) {
       )
       let document
 
-      if (fromStore) {
+      if (isStored) {
         document = stored.document
       } else {
         document = await fetchDocument(properties.id, {auth})
@@ -64,7 +58,7 @@ async function fetchDocuments({options, logger, store, auth}) {
         links,
       })
 
-      return {googleDocument, fromStore}
+      return {googleDocument, isStored}
     })
   )
 

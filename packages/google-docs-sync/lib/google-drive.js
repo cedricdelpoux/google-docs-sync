@@ -84,7 +84,6 @@ const getTreeMetadata = (tree, file) => {
     }
   })
 
-  // /folder/index -> /folder
   if (file.index) {
     const folder = breadcrumb.pop()
     if (folder && file.name === "index") {
@@ -97,12 +96,10 @@ const getTreeMetadata = (tree, file) => {
     slug += `/${nameSlugified}`
   }
 
-  // Metadata slug from "description"
   if (file.slug) {
     slug = file.slug
   }
 
-  // Root
   if (slug === "") {
     slug = "/"
   }
@@ -134,13 +131,11 @@ const updateFile = ({file, folder, warn}) => {
     getMetadataFromDescription(file.description, file.name, warn)
   )
 
-  // Breadcrumb, slug, path
   Object.assign(file, getTreeMetadata(folder.tree, file))
 
   return file
 }
 
-// 10 per 1.5 seconds.
 const rateLimit = wait(10, 1500)
 const BATCH_SIZE = 100
 async function fetchDocumentsFiles({drive, parents, options, logger}) {
@@ -208,7 +203,6 @@ async function fetchDocumentsFiles({drive, parents, options, logger}) {
           },
         ]
 
-        // we don't want to spread "skip" folder metadata to documents
         if (metadata.skip) {
           delete metadata.skip
         }
@@ -242,7 +236,6 @@ async function fetchDocumentsFiles({drive, parents, options, logger}) {
   let documentsInFolders = []
 
   const fetchOneParentsBatch = async () => {
-    // process one batch of children while continuing on with pages
     const parentBatch = nextParents.slice(0, BATCH_SIZE)
     nextParents = nextParents.slice(BATCH_SIZE)
     const results = await fetchDocumentsFiles({
@@ -294,9 +287,6 @@ const toComment = ({quotedFileContent, replies = [], ...comment}) => ({
 })
 
 /**
- * Every comment of a document, the resolved ones included, the deleted ones
- * left out by Drive.
- *
  * @param {string} fileId
  * @param {{auth: import("google-auth-library").OAuth2Client}} clients
  * @returns {Promise<Comment[]>}

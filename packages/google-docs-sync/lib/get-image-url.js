@@ -1,6 +1,6 @@
-const numberMax = 16384
+const MAX_SIZE = 16384
 const isSizeValid = (number) =>
-  number && Number.isInteger(number) && number > 0 && number < numberMax
+  number && Number.isInteger(number) && number > 0 && number < MAX_SIZE
 
 const getImageUrlParameters = (options) => {
   const {imagesOptions} = options

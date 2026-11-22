@@ -6,7 +6,6 @@ import {join} from "node:path"
 
 import {downloadImage} from "../lib/download-image.js"
 
-// The retry delays resolve at once
 vi.mock("node:timers/promises", () => ({setTimeout: vi.fn(async () => {})}))
 
 const URL = "https://lh7-rt.googleusercontent.com/docsz/AD_4nXabc123?key=Ab12Cd"
@@ -38,8 +37,6 @@ test("writes the image and returns its file name", async () => {
 })
 
 test("takes the extension from the response, not from the URL", async () => {
-  // Google serves document images without any extension, and
-  // `gatsby-plugin-sharp` dispatches on the extension of the File node
   global.fetch.mockResolvedValue(image("image/jpeg; charset=binary"))
 
   expect(await downloadImage({url: URL, directory, name: "cover"})).toBe(
@@ -89,7 +86,6 @@ test("asks again for an image Google rate limits", async () => {
 })
 
 test("refuses a response that is not an image", async () => {
-  // An expired image URL answers with an HTML error page
   global.fetch.mockResolvedValue(image("text/html"))
 
   await expect(
@@ -106,7 +102,6 @@ test("refuses a response that tells nothing about its type", async () => {
 })
 
 test("leaves no half-written file behind", async () => {
-  // Sharp would fail on it much later, with a far less obvious message
   global.fetch.mockImplementation(async () => {
     const body = new ReadableStream({
       start(controller) {

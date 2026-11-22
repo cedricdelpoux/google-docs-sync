@@ -63,11 +63,11 @@ let store
 
 const write = async ({
   googleDocument = createGoogleDocument(),
-  fromStore,
+  isStored,
   options,
 }) =>
   writeDocuments({
-    documents: [{googleDocument, fromStore}],
+    documents: [{googleDocument, isStored}],
     options: {outputDir, extension: "md", ...options},
     logger,
     store,
@@ -81,7 +81,6 @@ beforeEach(async () => {
   outputDir = join(dir, "content")
   store = createStore({dir: join(dir, ".google-docs")})
 
-  // The real one streams the response to disk and gives the file name back
   downloadImage.mockImplementation(async ({directory, name}) => {
     await mkdir(directory, {recursive: true})
     await writeFile(join(directory, `${name}.png`), "image")
@@ -96,7 +95,7 @@ afterEach(async () => {
 
 test("downloads an image to the store and copies it next to the document", async () => {
   const {documents, imagesCount, downloadedImagesCount} = await write({
-    fromStore: false,
+    isStored: false,
   })
 
   expect(downloadImage).toHaveBeenCalledTimes(1)
@@ -111,7 +110,6 @@ test("downloads an image to the store and copies it next to the document", async
     "alt-text.png",
   ])
 
-  // The URL is gone from the markdown, the image is a file next to it now
   expect(documents[0].markdown).toContain("images/home/alt-text.png")
   expect(documents[0].markdown).not.toContain(IMAGE_URL)
 })
@@ -122,7 +120,7 @@ test("downloads an image whatever the format of its URL", async () => {
 
   const {documents} = await write({
     googleDocument: createGoogleDocument(createDocument(url)),
-    fromStore: false,
+    isStored: false,
   })
 
   expect(downloadImage.mock.calls[0][0].url).toBe(url)
@@ -152,7 +150,7 @@ test("numbers the untitled images in the order of the document", async () => {
 
   const {documents} = await write({
     googleDocument: createGoogleDocument(document),
-    fromStore: false,
+    isStored: false,
   })
 
   expect(documents[0].markdown.indexOf("images/home/home-1.png")).toBeLessThan(
@@ -165,7 +163,7 @@ test("numbers the untitled images in the order of the document", async () => {
 })
 
 test("downloads an image at the size of the options", async () => {
-  await write({fromStore: false, options: {imagesOptions: {width: 800}}})
+  await write({isStored: false, options: {imagesOptions: {width: 800}}})
 
   expect(downloadImage).toHaveBeenCalledTimes(1)
   expect(downloadImage.mock.calls[0][0].url).toBe(
@@ -179,7 +177,7 @@ test("downloads an image at its original size when it cannot be resized", async 
   )
 
   const {documents} = await write({
-    fromStore: false,
+    isStored: false,
     options: {imagesOptions: {width: 800}},
   })
 
@@ -198,7 +196,7 @@ test("does not fall back to the original size on another error", async () => {
     Object.assign(new Error("404 Not Found"), {status: 404})
   )
 
-  await write({fromStore: false, options: {imagesOptions: {width: 800}}})
+  await write({isStored: false, options: {imagesOptions: {width: 800}}})
 
   expect(downloadImage).toHaveBeenCalledTimes(1)
   expect(logger.warn).toHaveBeenCalledWith(
@@ -207,10 +205,10 @@ test("does not fall back to the original size on another error", async () => {
 })
 
 test("does not download an image the store already holds", async () => {
-  await write({fromStore: false})
+  await write({isStored: false})
   downloadImage.mockClear()
 
-  const {imagesCount, downloadedImagesCount} = await write({fromStore: true})
+  const {imagesCount, downloadedImagesCount} = await write({isStored: true})
 
   expect(downloadImage).not.toHaveBeenCalled()
   expect(downloadedImagesCount).toBe(0)
@@ -221,11 +219,11 @@ test("does not download an image the store already holds", async () => {
 })
 
 test("puts back an image deleted from the output directory", async () => {
-  await write({fromStore: false})
+  await write({isStored: false})
   await rm(join(outputDir, "images"), {recursive: true})
   downloadImage.mockClear()
 
-  await write({fromStore: true})
+  await write({isStored: true})
 
   expect(downloadImage).not.toHaveBeenCalled()
   expect(await readdir(join(outputDir, "images", "home"))).toEqual([
@@ -234,14 +232,12 @@ test("puts back an image deleted from the output directory", async () => {
 })
 
 test("fetches a stored document again for an image the store lost", async () => {
-  // The URLs of a stored document expire: an image that has to be downloaded
-  // can only be downloaded from a URL the document is fetched again for
   const freshUrl =
     "https://docs.google.com/docs-images-rt/AIpPl2Dfresh456=s2048?key=Ef34Gh"
   const refetchDocument = vi.fn().mockResolvedValue(createDocument(freshUrl))
 
   await writeDocuments({
-    documents: [{googleDocument: createGoogleDocument(), fromStore: true}],
+    documents: [{googleDocument: createGoogleDocument(), isStored: true}],
     options: {outputDir, extension: "md"},
     logger,
     store,
@@ -262,7 +258,7 @@ test("fetches a document again when its image URLs expired", async () => {
   )
 
   const {documents} = await writeDocuments({
-    documents: [{googleDocument: createGoogleDocument(), fromStore: false}],
+    documents: [{googleDocument: createGoogleDocument(), isStored: false}],
     options: {outputDir, extension: "md"},
     logger,
     store,
@@ -296,7 +292,7 @@ test("downloads the images of several documents at once", async () => {
     googleDocument: new GoogleDocument(createDocument(), {
       frontmatter: {id, name: id, slug: `/${id}`},
     }),
-    fromStore: false,
+    isStored: false,
   }))
 
   const {documents, imagesCount} = await writeDocuments({
@@ -315,9 +311,8 @@ test("downloads the images of several documents at once", async () => {
 })
 
 test("forgets an image the document does not reference anymore", async () => {
-  await write({fromStore: false})
+  await write({isStored: false})
 
-  // A replaced image is a new object in the document, under a new id
   const replaced = createDocument()
   replaced.inlineObjects["kix.def456"] = replaced.inlineObjects[IMAGE_ID]
   delete replaced.inlineObjects[IMAGE_ID]
@@ -326,7 +321,7 @@ test("forgets an image the document does not reference anymore", async () => {
 
   await write({
     googleDocument: createGoogleDocument(replaced),
-    fromStore: false,
+    isStored: false,
   })
 
   expect(await readdir(store.imagesDirectory("1Tn1dCbIc"))).toEqual([
@@ -335,7 +330,7 @@ test("forgets an image the document does not reference anymore", async () => {
 })
 
 test("keeps an image the document could not download this time", async () => {
-  await write({fromStore: false})
+  await write({isStored: false})
   downloadImage.mockRejectedValue(new Error("Unable to download"))
 
   const other = createDocument(
@@ -346,7 +341,7 @@ test("keeps an image the document could not download this time", async () => {
   other.body.content[0].paragraph.elements[0].inlineObjectElement.inlineObjectId =
     "kix.def456"
 
-  await write({googleDocument: createGoogleDocument(other), fromStore: false})
+  await write({googleDocument: createGoogleDocument(other), isStored: false})
 
   expect(await readdir(store.imagesDirectory("1Tn1dCbIc"))).toEqual([
     `${IMAGE_ID}.png`,
@@ -356,7 +351,7 @@ test("keeps an image the document could not download this time", async () => {
 test("keeps the markdown usable when an image cannot be downloaded", async () => {
   downloadImage.mockRejectedValue(new Error("Unable to download"))
 
-  const {documents, imagesCount} = await write({fromStore: false})
+  const {documents, imagesCount} = await write({isStored: false})
 
   expect(imagesCount).toBe(0)
   expect(logger.warn).toHaveBeenCalled()
@@ -370,7 +365,7 @@ test("writes a document without images and downloads nothing", async () => {
       inlineObjects: {},
       body: {content: []},
     }),
-    fromStore: false,
+    isStored: false,
   })
 
   expect(downloadImage).not.toHaveBeenCalled()
@@ -387,7 +382,7 @@ test("downloads an image from its old URL when the fresh document no longer hold
   })
 
   await writeDocuments({
-    documents: [{googleDocument: createGoogleDocument(), fromStore: true}],
+    documents: [{googleDocument: createGoogleDocument(), isStored: true}],
     options: {outputDir, extension: "md"},
     logger,
     store,
@@ -406,7 +401,7 @@ test("names an untitled image after the image alone when the document has no nam
     googleDocument: new GoogleDocument(document, {
       frontmatter: {id: "1Tn1dCbIc", name: "", slug: "/home"},
     }),
-    fromStore: false,
+    isStored: false,
   })
 
   expect(await readdir(join(outputDir, "images", "home"))).toEqual([
@@ -415,19 +410,17 @@ test("names an untitled image after the image alone when the document has no nam
 })
 
 test("warns about an image that cannot be copied and keeps its URL", async () => {
-  // A file where the images directory should be makes the copy fail
   await mkdir(outputDir, {recursive: true})
   await writeFile(join(outputDir, "images"), "not a directory")
 
-  const {documents} = await write({fromStore: false})
+  const {documents} = await write({isStored: false})
 
   expect(logger.warn).toHaveBeenCalledWith(expect.stringContaining("ENOTDIR"))
   expect(documents[0].markdown).toContain(IMAGE_URL)
 })
 
 test("fails when a document cannot be read to check whether it changed", async () => {
-  // A directory where the document file should be cannot be read as a file
   await mkdir(join(outputDir, "home.md"), {recursive: true})
 
-  await expect(write({fromStore: false})).rejects.toThrow("EISDIR")
+  await expect(write({isStored: false})).rejects.toThrow("EISDIR")
 })

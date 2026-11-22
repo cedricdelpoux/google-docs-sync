@@ -1,12 +1,10 @@
-import {mkdir, readdir, readFile, rename, rm, writeFile} from "node:fs/promises"
+import {mkdir, readFile, rename, rm, writeFile} from "node:fs/promises"
 import {basename, dirname, extname, join} from "node:path"
 
-// Documents and images are kept in a directory of their own rather than in the
-// cache of a framework, which empties it whenever its configuration or its
-// dependencies change, and a continuous integration job never has one: a site
-// would fetch every document and download every image again after adding a
-// dependency. This directory is only emptied by hand, or when what it holds
-// cannot be reused.
+import {readEntries} from "./files.js"
+
+// Kept apart from the cache of a framework, which it empties whenever its
+// configuration or its dependencies change
 const VERSION = 1
 
 const DOCUMENTS_DIRECTORY = "documents"
@@ -37,8 +35,7 @@ const readJson = async (file) => {
   }
 }
 
-// Written next to the target then renamed, so that an interrupted build leaves
-// the previous version behind rather than a truncated file
+// Renamed into place so that an interrupted build never leaves a truncated file
 const writeJson = async (file, content) => {
   const temporaryFile = `${file}.tmp`
 
@@ -47,20 +44,7 @@ const writeJson = async (file, content) => {
   await rename(temporaryFile, file)
 }
 
-const list = async (directory) => {
-  try {
-    return await readdir(directory)
-  } catch (e) {
-    if (e.code === "ENOENT") return []
-
-    throw e
-  }
-}
-
-/**
- * The `.google-docs` directory: one file per document, and the images they
- * reference, so that a build only fetches what changed on Google Drive.
- */
+/** The cache directory: one file per document, and its images. */
 const createStore = ({dir}) => {
   const documentsDirectory = join(dir, DOCUMENTS_DIRECTORY)
   const imagesDirectory = join(dir, IMAGES_DIRECTORY)
@@ -72,12 +56,7 @@ const createStore = ({dir}) => {
   return {
     dir,
 
-    /**
-     * Drop what a previous run left behind and cannot be reused: a store
-     * written by another version of the package, and images downloaded with
-     * other `imagesOptions` — the size is part of the URL, so the files on
-     * disk are not the ones the site asks for anymore.
-     */
+    /** Drop what cannot be reused: another version, or other image sizes. */
     async init({imagesParams}) {
       const state = (await readJson(stateFile)) || {}
 
@@ -102,24 +81,23 @@ const createStore = ({dir}) => {
     imagesDirectory: documentImagesDirectory,
 
     /**
-     * The images already downloaded for a document, by the id of the object
-     * that holds them. One `readdir` rather than one `stat` per image: the
-     * extension is only known once the image has been downloaded, since Google
-     * serves it without one.
+     * The extension is only known once an image is downloaded, hence the
+     * `readdir` rather than a `stat` per image.
      *
      * @returns {Promise<Map<string, string>>} object id -> file name
      */
     async readImages(id) {
-      const files = await list(documentImagesDirectory(id))
+      const files = (await readEntries(documentImagesDirectory(id))).map(
+        ({name}) => name
+      )
 
       return new Map(files.map((file) => [basename(file, extname(file)), file]))
     },
 
-    /** Forget the documents that are not in the Google Drive folder anymore. */
     async prune(ids) {
       const kept = new Set(ids.map(toFileName))
 
-      for (const file of await list(documentsDirectory)) {
+      for (const {name: file} of await readEntries(documentsDirectory)) {
         if (!kept.has(basename(file, extname(file)))) {
           await rm(join(documentsDirectory, file), {
             recursive: true,
@@ -128,7 +106,7 @@ const createStore = ({dir}) => {
         }
       }
 
-      for (const directory of await list(imagesDirectory)) {
+      for (const {name: directory} of await readEntries(imagesDirectory)) {
         if (!kept.has(directory)) {
           await rm(join(imagesDirectory, directory), {
             recursive: true,

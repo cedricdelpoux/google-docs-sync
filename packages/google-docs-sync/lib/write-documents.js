@@ -13,42 +13,23 @@ import {getImageUrl} from "./get-image-url.js"
 const IMAGES_DIR = "images"
 const MAX_PARALLEL_DOWNLOADS = 8
 
-/**
- * Turn a document slug into the path of the file that holds it.
- *
- * The root document ("/") becomes "index.md" so that the tree on disk mirrors
- * the tree of URLs, which is what makes the relative image paths below
- * predictable.
- */
-const getDocumentPath = (slug, extension) => {
-  const trimmed = String(slug || "").replace(/^\/+|\/+$/g, "")
+const trimSlashes = (slug) => String(slug || "").replace(/^\/+|\/+$/g, "")
 
-  return trimmed === "" ? `index.${extension}` : `${trimmed}.${extension}`
-}
+/** The tree on disk mirrors the tree of URLs, the root being "index". */
+const getDocumentPath = (slug, extension) =>
+  `${trimSlashes(slug) || "index"}.${extension}`
 
 /**
- * A directory of its own per document, so that two documents using the same
- * image title do not overwrite each other's images.
- *
- * The slug is kept as a path rather than flattened: slugs are unique, so
- * mirroring them guarantees unique directories, where kebab-casing would map
+ * One directory per document, mirroring its slug: kebab-casing it would map
  * both "/foo/bar" and "/foo-bar" onto "foo-bar".
  */
-const getImagesDirectory = (slug) => {
-  const trimmed = String(slug || "").replace(/^\/+|\/+$/g, "")
-
-  return join(IMAGES_DIR, trimmed === "" ? "index" : trimmed)
-}
+const getImagesDirectory = (slug) =>
+  join(IMAGES_DIR, trimSlashes(slug) || "index")
 
 /** Markdown needs forward slashes, `path.relative` gives back platform ones. */
 const toPosix = (path) => path.split(sep).join("/")
 
-/**
- * Download an image at the size of `imagesOptions`, or at its original size
- * when Google does not understand the size parameters added to its URL: their
- * syntax is tied to the shape of the URL, which Google changes from time to
- * time.
- */
+/** Fall back to the original size when Google rejects the size parameters. */
 const downloadResizedImage = async ({
   url,
   options,
@@ -74,12 +55,8 @@ const downloadResizedImage = async ({
 }
 
 /**
- * Copy a stored image next to the document referencing it, unless the copy is
- * already there and up to date.
- *
- * `outputDir` holds a copy rather than a link because it is the directory the
- * site reads, and it is swept clean of what a sync did not write. On a site with hundreds of images, copying them all on
- * every build costs more than looking at them first.
+ * Copy a stored image next to its document, unless an up to date copy is
+ * already there. A copy rather than a link, since `outputDir` is swept clean.
  */
 const copyImage = async (source, destination) => {
   const [sourceStats, destinationStats] = await Promise.all([
@@ -100,16 +77,10 @@ const copyImage = async (source, destination) => {
   }
 
   await mkdir(dirname(destination), {recursive: true})
-  // Copy on write where the filesystem does it, a plain copy everywhere else
   await copyFile(source, destination, constants.COPYFILE_FICLONE)
 }
 
-/**
- * Write a document, unless the same one is already there.
- *
- * File watchers and incremental builds react to the modification time of a
- * file, so a document that did not change must not be touched.
- */
+/** File watchers react to the modification time, so leave unchanged files. */
 const writeIfChanged = async (filePath, content) => {
   try {
     if ((await readFile(filePath, "utf8")) === content) return
@@ -122,20 +93,12 @@ const writeIfChanged = async (filePath, content) => {
 }
 
 /**
- * Download every image of a document, then rewrite the URLs it contains into
- * paths relative to the document file.
- *
- * Frameworks resolve image paths and the cover against the directory of the
- * file the markdown came from, so both only need the markdown to hold a
- * correct relative path.
- *
- * Images are downloaded to the store, under the id of the object holding them,
- * and copied from there: it is what makes a second build on a document full of
- * images cost nothing.
+ * Download the images of a document to the store, copy them next to it and
+ * rewrite their URLs into paths relative to the document file.
  */
 async function writeImages({
   googleDocument,
-  fromStore,
+  isStored,
   markdown,
   outputDir,
   documentPath,
@@ -162,10 +125,8 @@ async function writeImages({
   let downloadedCount = 0
   let freshUrlsById
 
-  /**
-   * Google expires the image URLs a few minutes after a document is fetched,
-   * and fetching it again gives fresh URLs under the same image ids.
-   */
+  // Google expires the image URLs a few minutes after a fetch
+
   const getFreshUrl = async ({id, url}) => {
     freshUrlsById ??= refetchDocument(documentId).then(
       (document) =>
@@ -190,7 +151,7 @@ async function writeImages({
     })
 
   const downloadToStore = async (image) => {
-    if (fromStore) return download(image, await getFreshUrl(image))
+    if (isStored) return download(image, await getFreshUrl(image))
 
     try {
       return await download(image, image.url)
@@ -244,8 +205,7 @@ async function writeImages({
 
       const relativePath = toPosix(relative(documentDirectory, imagePath))
 
-      // `split`/`join` rather than `replace`: the URL is a literal, and the
-      // same image can be referenced by both the cover and the body.
+      // Not `replace`: the cover and the body can reference the same URL
       updatedMarkdown = updatedMarkdown.split(url).join(relativePath)
       imageFiles.push(imagePath)
     } catch (e) {
@@ -253,9 +213,7 @@ async function writeImages({
     }
   }
 
-  // An image replaced in a document leaves the one it replaced behind, and the
-  // store would grow forever. Only once every image of the document made it,
-  // so that a download that failed never costs one that was already there.
+  // Only once every image made it, so a failed download never costs a stored one
   if (imageFiles.length === images.length) {
     for (const [imageId, fileName] of storedImages) {
       if (!usedImageIds.has(imageId)) {
@@ -280,7 +238,7 @@ async function writeDocuments({
   const limit = createLimit(MAX_PARALLEL_DOWNLOADS)
 
   const results = await Promise.all(
-    googleDocuments.map(async ({googleDocument, fromStore}) => {
+    googleDocuments.map(async ({googleDocument, isStored}) => {
       const documentPath = getDocumentPath(
         googleDocument.frontmatter.slug,
         extension
@@ -292,7 +250,7 @@ async function writeDocuments({
       if (!options.skipImages) {
         writtenImages = await writeImages({
           googleDocument,
-          fromStore,
+          isStored,
           markdown,
           outputDir,
           documentPath,
@@ -317,8 +275,6 @@ async function writeDocuments({
   )
 
   return {
-    // Images count as written files too, otherwise the stale-file sweep would
-    // delete every one of them right after writing.
     writtenFiles: results.flatMap(({filePath, imageFiles}) => [
       ...imageFiles,
       filePath,
