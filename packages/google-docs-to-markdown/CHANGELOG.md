@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.2
+
+### Patch Changes
+
+- 00c016e: List the GitHub Sponsors, Ko-fi, thanks.dev and PayPal links in `npm fund`, and point the README links to the `main` branch.
+
 ## 2.0.1
 
 ### Patch Changes
