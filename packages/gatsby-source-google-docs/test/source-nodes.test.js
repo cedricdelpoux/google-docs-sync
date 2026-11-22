@@ -162,6 +162,16 @@ test("reports what went wrong instead of throwing", async () => {
   )
 })
 
+test("reports the whole error in debug mode", async () => {
+  const error = new Error("Method doesn't allow callers")
+  syncGoogleDocs.mockRejectedValue(error)
+
+  const api = createApi()
+  await sourceNodes(api, {folder: "folder-id", outputDir, debug: true})
+
+  expect(api.reporter.panic).toHaveBeenCalledWith("source-google-docs: ", error)
+})
+
 test("keeps the cache directory next to the site, outside the Gatsby cache", async () => {
   await sourceNodes(createApi(), {folder: "folder-id", outputDir})
 

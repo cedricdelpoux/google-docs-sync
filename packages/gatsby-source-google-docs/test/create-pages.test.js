@@ -136,6 +136,38 @@ test("panics when a document asks for a template that does not exist", async () 
   expect(api.reporter.panic.mock.calls[0][0]).toContain(`"missing" not found`)
 })
 
+test("panics when a document has no template and the default one does not exist", async () => {
+  const api = createApi({nodes: [createNode({})]})
+
+  await rm("src/templates/page.js")
+  await createPages(api, {createPages: true})
+
+  expect(api.actions.createPage).not.toHaveBeenCalled()
+  expect(api.reporter.panic.mock.calls[0][0]).toContain(
+    `missing template for "/home". Default template "page" not found.`
+  )
+})
+
+test("panics with the errors of the GraphQL query", async () => {
+  const api = createApi({nodes: []})
+  const errors = [new Error("Cannot query field")]
+  api.graphql.mockResolvedValue({errors, data: {}})
+
+  await createPages(api, {createPages: true})
+
+  expect(api.reporter.panic).toHaveBeenCalledWith(errors)
+})
+
+test("creates no page when the site holds no markdown at all", async () => {
+  const api = createApi({nodes: []})
+  api.graphql.mockResolvedValue({data: {allMarkdownRemark: null}})
+
+  await createPages(api, {createPages: true})
+
+  expect(api.actions.createPage).not.toHaveBeenCalled()
+  expect(api.reporter.panic).not.toHaveBeenCalled()
+})
+
 test("does nothing without the `createPages` option", async () => {
   const api = createApi({nodes: [createNode({})]})
 
