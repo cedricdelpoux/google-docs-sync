@@ -12,6 +12,7 @@
  * @property {string} [cacheDir] Directory the documents and images fetched from Google are kept in between syncs, ".google-docs" by default. Delete it to fetch everything again.
  * @property {"md" | "mdx"} [extension] Extension of the written files, "md" by default. Use "mdx" to author documents as MDX.
  * @property {{width?: number, height?: number, crop?: boolean}} [imagesOptions] Size the images are downloaded at, between 1 and 16383. Changing it downloads them again.
+ * @property {boolean} [comments] Add the comments of every document to its frontmatter, `false` by default. It costs one more Google Drive request per document on every sync.
  * @property {boolean} [debug] Log the progress of every step
  * @property {import("google-auth-library").OAuth2Client} [auth] Google client, built from the environment variables by default
  * @property {Logger} [logger] Receives the messages of the sync, `console` by default
@@ -25,6 +26,7 @@ export const DEFAULT_OPTIONS = {
   outputDir: "content/google-docs",
   cacheDir: ".google-docs",
   extension: "md",
+  comments: false,
   debug: false,
   demoteHeadings: true,
 }

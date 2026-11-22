@@ -2,11 +2,14 @@ import {beforeEach, expect, test, vi} from "vitest"
 
 import {fetchDocument} from "../lib/fetch-document.js"
 
-import {fetchFiles} from "../lib/google-drive.js"
+import {fetchComments, fetchFiles} from "../lib/google-drive.js"
 import {fetchDocuments} from "../lib/google-docs.js"
 
 vi.mock("../lib/fetch-document.js", () => ({fetchDocument: vi.fn()}))
-vi.mock("../lib/google-drive.js", () => ({fetchFiles: vi.fn()}))
+vi.mock("../lib/google-drive.js", () => ({
+  fetchFiles: vi.fn(),
+  fetchComments: vi.fn(),
+}))
 
 const document = {
   title: "Home",
@@ -35,10 +38,13 @@ const properties = {
   modifiedTime: "2026-09-07T10:00:00.000Z",
 }
 
+const comments = [{id: "c1", content: "Check this", replies: []}]
+
 beforeEach(() => {
   vi.clearAllMocks()
   fetchDocument.mockResolvedValue(document)
   fetchFiles.mockResolvedValue([properties])
+  fetchComments.mockResolvedValue(comments)
 })
 
 test("fetches a document the store does not hold", async () => {
@@ -118,4 +124,46 @@ test("logs the progress in debug mode only", async () => {
   expect(logger.info).toHaveBeenCalledWith(
     "1 documents, 1 fetched from Google Docs"
   )
+})
+
+test("does not fetch the comments without the option", async () => {
+  const store = createFakeStore()
+
+  const {documents} = await fetchDocuments({options: {}, logger, store})
+
+  expect(fetchComments).not.toHaveBeenCalled()
+  expect(documents[0].googleDocument.frontmatter.comments).toBeUndefined()
+  expect(store.documents["1Tn1dCbIc"].comments).toBeUndefined()
+})
+
+test("fetches the comments with the document, without storing them", async () => {
+  const store = createFakeStore()
+
+  const {documents} = await fetchDocuments({
+    options: {comments: true},
+    logger,
+    store,
+    auth: "auth",
+  })
+
+  expect(fetchComments).toHaveBeenCalledWith("1Tn1dCbIc", {auth: "auth"})
+  expect(documents[0].googleDocument.frontmatter.comments).toEqual(comments)
+  expect(store.documents["1Tn1dCbIc"].comments).toBeUndefined()
+})
+
+test("fetches the comments of a document that has not been modified", async () => {
+  const store = createFakeStore({
+    "1Tn1dCbIc": {modifiedTime: properties.modifiedTime, document},
+  })
+
+  const {documents, fetchedCount} = await fetchDocuments({
+    options: {comments: true},
+    logger,
+    store,
+  })
+
+  expect(fetchDocument).not.toHaveBeenCalled()
+  expect(fetchedCount).toBe(0)
+  expect(fetchComments).toHaveBeenCalledTimes(1)
+  expect(documents[0].googleDocument.frontmatter.comments).toEqual(comments)
 })

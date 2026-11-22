@@ -237,6 +237,10 @@ export default config
 
 A build only fetches the documents and images that changed since the previous one. They are kept in the `.google-docs` directory next to your `gatsby-config.js` (the `cacheDir` option), which is **not** the Gatsby cache, on purpose: Gatsby empties its own whenever a plugin version, `package.json`, `gatsby-config.js` or `gatsby-node.js` changes, and a continuous integration job never has one. Add `.google-docs` to your `.gitignore`, or commit it to give your continuous integration a folder it does not have to fetch. See [how the cache works](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/google-docs-sync#only-what-changed-is-fetched).
 
+### Read the comments
+
+With the [`comments` option](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/google-docs-sync#options), the comments of a document are available under `frontmatter`: `frontmatter { comments { content quote author { displayName } } }`.
+
 ### Create templates and pages
 
 Using `createPages: true` option, pages will be created automatically.

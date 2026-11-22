@@ -37,6 +37,29 @@ export const createSchema = ({actions, store, reporter}) => {
       image: File @fileByRelativePath
     }
 
+    type GoogleDocsCommentAuthor {
+      displayName: String
+    }
+
+    type GoogleDocsCommentReply {
+      id: String
+      content: String
+      author: GoogleDocsCommentAuthor
+      createdTime: Date @dateformat
+      action: String
+    }
+
+    type GoogleDocsComment {
+      id: String
+      content: String
+      author: GoogleDocsCommentAuthor
+      createdTime: Date @dateformat
+      modifiedTime: Date @dateformat
+      resolved: Boolean
+      quote: String
+      replies: [GoogleDocsCommentReply!]
+    }
+
     type ${frontmatterType} {
       name: String
       slug: String
@@ -49,6 +72,7 @@ export const createSchema = ({actions, store, reporter}) => {
       breadcrumb: [GoogleDocsBreadcrumbItem!]
       cover: GoogleDocsCover
       related: [String!]
+      comments: [GoogleDocsComment!]
     }
   `)
 }

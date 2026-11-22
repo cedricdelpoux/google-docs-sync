@@ -122,7 +122,7 @@ Returns a Next.js config function. It takes the [options of `google-docs-sync`](
 
 ### `getDocuments(paths?)`
 
-Returns the metadata of every synced document: `id`, `name`, `slug`, `path`, `breadcrumb`, `date`, `cover`, and your own metadata. The image of the `cover` is a URL.
+Returns the metadata of every synced document: `id`, `name`, `slug`, `path`, `breadcrumb`, `date`, `cover`, `comments` (with the [`comments` option](https://github.com/cedricdelpoux/google-docs-sync/tree/main/packages/google-docs-sync#options)), and your own metadata. The image of the `cover` is a URL.
 
 ### `getDocument(slug, paths?)`
 

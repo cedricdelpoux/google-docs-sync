@@ -52,3 +52,15 @@ test("warns and does nothing when no transformer is installed", () => {
     `neither "gatsby-transformer-remark" nor "gatsby-plugin-mdx"`
   )
 })
+
+test("declares the comments of a document, empty or absent without the option", () => {
+  const api = createApi("gatsby-transformer-remark")
+
+  createSchema(api)
+
+  const typeDefs = api.actions.createTypes.mock.calls[0][0]
+
+  expect(typeDefs).toContain("comments: [GoogleDocsComment!]")
+  expect(typeDefs).toContain("author: GoogleDocsCommentAuthor")
+  expect(typeDefs).toContain("replies: [GoogleDocsCommentReply!]")
+})
