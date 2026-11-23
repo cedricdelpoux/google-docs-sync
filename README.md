@@ -18,48 +18,14 @@
 
 Use Google Docs as a content source. This monorepo holds the packages that read a Google Doc, convert it to Markdown or MDX, and handle the Google authentication they need.
 
-|                                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                                       | Package                                                             | Version                      | Description                                                              |
-| :--------------------------------------------------------------------------------------------------------------------------------------------------: | ------------------------------------------------------------------- | ---------------------------- | ------------------------------------------------------------------------ |
-| <a href="./packages/gatsby-source-google-docs"><img src=".github/assets/icons/gatsby-source-google-docs.svg" width="46" height="24" align="top"></a> | [`gatsby-source-google-docs`](./packages/gatsby-source-google-docs) | [![npm][v-gatsby]][n-gatsby] | Gatsby plugin that uses Google Docs as a data source                     |
-|  <a href="./packages/astro-loader-google-docs"><img src=".github/assets/icons/astro-loader-google-docs.svg" width="46" height="24" align="top"></a>  | [`astro-loader-google-docs`](./packages/astro-loader-google-docs)   | [![npm][v-astro]][n-astro]   | Astro content loader that uses Google Docs as a collection               |
-|          <a href="./packages/next-google-docs"><img src=".github/assets/icons/next-google-docs.svg" width="46" height="24" align="top"></a>          | [`next-google-docs`](./packages/next-google-docs)                   | [![npm][v-next]][n-next]     | Next.js adapter that syncs Google Docs at build time                     |
-|          <a href="./packages/google-docs-sync"><img src=".github/assets/icons/google-docs-sync.svg" width="24" height="24" align="top"></a>          | [`google-docs-sync`](./packages/google-docs-sync)                   | [![npm][v-sync]][n-sync]     | Sync a Google Drive folder of Google Docs to local Markdown or MDX files |
-|   <a href="./packages/google-docs-to-markdown"><img src=".github/assets/icons/google-docs-to-markdown.svg" width="24" height="24" align="top"></a>   | [`google-docs-to-markdown`](./packages/google-docs-to-markdown)     | [![npm][v-md]][n-md]         | Convert a Google Docs API document to Markdown or MDX                    |
-|    <a href="./packages/google-oauth2-env-vars"><img src=".github/assets/icons/google-oauth2-env-vars.svg" width="24" height="24" align="top"></a>    | [`google-oauth2-env-vars`](./packages/google-oauth2-env-vars)       | [![npm][v-oauth]][n-oauth]   | Generate and cache Google OAuth 2.0 tokens in `.env` files               |
-
-## Which package do I need?
-
-- **A Gatsby site**: [`gatsby-source-google-docs`](./packages/gatsby-source-google-docs).
-- **An Astro site**: [`astro-loader-google-docs`](./packages/astro-loader-google-docs).
-- **A Next.js site**: [`next-google-docs`](./packages/next-google-docs).
-- **Another framework, a build script or the command line**: [`google-docs-sync`](./packages/google-docs-sync).
-
-  ```shell
-  npx google-docs-sync --folder <id>
-  ```
-
-  ```js
-  import {syncGoogleDocs} from "google-docs-sync"
-
-  const {documents} = await syncGoogleDocs({
-    folder: "FOLDER_ID",
-    outputDir: "src/content/docs",
-  })
-  ```
-
-- **Only the conversion of a Google Docs API document**: [`google-docs-to-markdown`](./packages/google-docs-to-markdown).
-- **Only Google OAuth tokens in `.env` files**: [`google-oauth2-env-vars`](./packages/google-oauth2-env-vars).
-
-## How it works
-
-The framework packages are thin adapters over `google-docs-sync`, which owns the Google APIs and the filesystem. Each package has its own README and CHANGELOG.
-
-```text
-gatsby-source-google-docs, astro-loader-google-docs, next-google-docs
-  └─ google-docs-sync
-       ├─ google-docs-to-markdown
-       └─ google-oauth2-env-vars
-```
+|                                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                                       | Package                   | Version                      | Downloads      | Use it for                    |
+| :--------------------------------------------------------------------------------------------------------------------------------------------------: | ------------------------- | ---------------------------- | -------------- | ----------------------------- |
+|    <a href="./packages/google-oauth2-env-vars"><img src=".github/assets/icons/google-oauth2-env-vars.svg" width="24" height="24" align="top"></a>    | [![][p-oauth]][d-oauth]   | [![npm][v-oauth]][n-oauth]   | ![][dl-oauth]  | OAuth helper                  |
+|   <a href="./packages/google-docs-to-markdown"><img src=".github/assets/icons/google-docs-to-markdown.svg" width="24" height="24" align="top"></a>   | [![][p-md]][d-md]         | [![npm][v-md]][n-md]         | ![][dl-md]     | Markdown export               |
+|          <a href="./packages/google-docs-sync"><img src=".github/assets/icons/google-docs-sync.svg" width="24" height="24" align="top"></a>          | [![][p-sync]][d-sync]     | [![npm][v-sync]][n-sync]     | ![][dl-sync]   | Incremental sync, images, CLI |
+| <a href="./packages/gatsby-source-google-docs"><img src=".github/assets/icons/gatsby-source-google-docs.svg" width="46" height="24" align="top"></a> | [![][p-gatsby]][d-gatsby] | [![npm][v-gatsby]][n-gatsby] | ![][dl-gatsby] | Gatsby site                   |
+|  <a href="./packages/astro-loader-google-docs"><img src=".github/assets/icons/astro-loader-google-docs.svg" width="46" height="24" align="top"></a>  | [![][p-astro]][d-astro]   | [![npm][v-astro]][n-astro]   | ![][dl-astro]  | Astro site                    |
+|          <a href="./packages/next-google-docs"><img src=".github/assets/icons/next-google-docs.svg" width="46" height="24" align="top"></a>          | [![][p-next]][d-next]     | [![npm][v-next]][n-next]     | ![][dl-next]   | Next.js site                  |
 
 ## Support this project
 
@@ -88,6 +54,24 @@ gatsby-source-google-docs, astro-loader-google-docs, next-google-docs
 [badge-sponsor]: https://img.shields.io/badge/sponsor-%E2%99%A5-ea4aaa.svg?style=flat-square
 [actions]: https://github.com/cedricdelpoux/google-docs-sync/actions/workflows/ci.yml
 [codecov]: https://app.codecov.io/gh/cedricdelpoux/google-docs-sync
+[p-gatsby]: https://img.shields.io/static/v1?style=flat-square&label=%20&message=gatsby-source-google-docs&color=000605&logo=github&logoColor=white&labelColor=000605
+[d-gatsby]: ./packages/gatsby-source-google-docs
+[p-astro]: https://img.shields.io/static/v1?style=flat-square&label=%20&message=astro-loader-google-docs&color=000605&logo=github&logoColor=white&labelColor=000605
+[d-astro]: ./packages/astro-loader-google-docs
+[p-next]: https://img.shields.io/static/v1?style=flat-square&label=%20&message=next-google-docs&color=000605&logo=github&logoColor=white&labelColor=000605
+[d-next]: ./packages/next-google-docs
+[p-sync]: https://img.shields.io/static/v1?style=flat-square&label=%20&message=google-docs-sync&color=000605&logo=github&logoColor=white&labelColor=000605
+[d-sync]: ./packages/google-docs-sync
+[p-md]: https://img.shields.io/static/v1?style=flat-square&label=%20&message=google-docs-to-markdown&color=000605&logo=github&logoColor=white&labelColor=000605
+[d-md]: ./packages/google-docs-to-markdown
+[p-oauth]: https://img.shields.io/static/v1?style=flat-square&label=%20&message=google-oauth2-env-vars&color=000605&logo=github&logoColor=white&labelColor=000605
+[d-oauth]: ./packages/google-oauth2-env-vars
+[dl-gatsby]: https://img.shields.io/npm/dt/gatsby-source-google-docs.svg?style=flat-square&label=Downloads
+[dl-astro]: https://img.shields.io/npm/dt/astro-loader-google-docs.svg?style=flat-square&label=Downloads
+[dl-next]: https://img.shields.io/npm/dt/next-google-docs.svg?style=flat-square&label=Downloads
+[dl-sync]: https://img.shields.io/npm/dt/google-docs-sync.svg?style=flat-square&label=Downloads
+[dl-md]: https://img.shields.io/npm/dt/google-docs-to-markdown.svg?style=flat-square&label=Downloads
+[dl-oauth]: https://img.shields.io/npm/dt/google-oauth2-env-vars.svg?style=flat-square&label=Downloads
 [v-gatsby]: https://img.shields.io/npm/v/gatsby-source-google-docs.svg?style=flat-square
 [n-gatsby]: https://www.npmjs.com/package/gatsby-source-google-docs
 [v-astro]: https://img.shields.io/npm/v/astro-loader-google-docs.svg?style=flat-square
