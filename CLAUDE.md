@@ -40,17 +40,11 @@ Run from the root.
 - `npm run format`: `prettier --write .`.
 - `npm pack --dry-run -w <package>`: check the published files.
 
-## Commits
+## Commits and releases
 
-Commits follow Conventional Commits. When a commit touches a single package, the package name is its scope, as in `fix(google-docs-sync): keep the cache when a fetch fails` or `fix(google-docs-to-markdown): keep the table alignment`. A commit that spans several packages or only root files has no scope, as in `ci: ...` or `docs: ...`. Prefer one commit per package: when a change touches several packages, split it into one scoped commit per package, plus an unscoped commit for root files if needed. The release is one `chore(<package>): bump version to vX.Y.Z` commit per bumped package.
+Commits, versioning and publishing follow the `open-source` skill: the package name as scope, one release commit per bumped package, versioned locally and pushed to `main`.
 
-## Releases
-
-Independent versions with changesets (`.changeset/config.json`, base branch `main`).
-
-- A change to a package comes with a changeset: `npm run changeset`.
-- To release, version locally and push to `main`: `npx npm@11 run version-packages` (bumps the versions, writes the changelogs, refreshes the lock), then commit one `chore(<package>): bump version to vX.Y.Z` per bumped package, the root lock in the last one. No "Version packages" pull request: the repo has a single maintainer.
-- `.github/workflows/release.yml` runs `changesets/action` on `main`. It only publishes: it runs `npm run release` (`changeset publish`) through npm trusted publishing (OIDC, no token) for the versions npm does not have yet. A guard step fails the run with an error when a changeset is pending, so the action never versions, commits or opens a pull request: version locally and push the release commits.
-- npm stages each new version for a few minutes before it shows up. A push made during that window starts a Release run that tries to publish it again and fails with `E409 Cannot publish over previously staged version`: nothing is wrong, rerun it once the version is `latest` (`gh run rerun <id>`).
+- Independent versions with changesets (`.changeset/config.json`, base branch `main`). A change to a package comes with a changeset: `npm run changeset`.
+- `.github/workflows/release.yml` only publishes: it runs `npm run release` (`changeset publish`) through npm trusted publishing (OIDC, no token) for the versions npm does not have yet. A guard step fails the run when a changeset is pending, so the action never versions, commits or opens a pull request.
 - Tags are `<package>@<version>`. The ones imported before the merge are `google-docs-to-markdown@v1.0.1` and `google-oauth2-env-vars@v2.0.0`, the gatsby plugin keeps its old `vX.Y.Z` tags.
 - `.github/workflows/ci.yml` runs lint and tests on Node 22 and 24 (Gatsby 5 does not support Node 26).
